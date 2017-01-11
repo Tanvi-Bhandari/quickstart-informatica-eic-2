@@ -327,6 +327,7 @@
 				"INFAEICCLUSTERHVM": "ami-37af6e58"
 			}
 		},
+
         "ClusterSizeMapping": {
             "Small": {
                 "InstanceType": "c4.8xlarge"
