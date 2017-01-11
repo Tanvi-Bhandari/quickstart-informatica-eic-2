@@ -67,7 +67,7 @@
             ],
             "Description": "The cluster size (i.) Small (c4.8xlarge, single node) (ii.) Medium (c4.8xlarge, three nodes) (iii.)  Large (c4.8xlarge, six nodes)"
         },
-		"QSS3BucketName": {
+        "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Default": "quickstart-reference",
@@ -80,7 +80,7 @@
             "Default": "informatica/bdm/latest",
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
             "Type": "String"
-		},
+        },
         "IPAddressRange": {
             "Description": "The CIDR IP range that is permitted to access the Informatica domain and the Informatica embedded cluster",
             "Type": "String",
@@ -210,7 +210,7 @@
                         "ImportSampleData"
                     ]
                 },
-				{
+                {
                     "Label": {
                         "default": "AWS Quick Start Configuration"
                     },
@@ -218,7 +218,7 @@
                         "QSS3BucketName",
                         "QSS3KeyPrefix"
                     ]
-				}
+                }
             ],
             "ParameterLabels": {
                 "VPCID": {
@@ -257,12 +257,12 @@
                 "ImportSampleData": {
                     "default": "Import Sample Content"
                 },
-				"QSS3BucketName": {
+                "QSS3BucketName": {
                     "default": "Quick Start S3 Bucket Name"
                 },
                 "QSS3KeyPrefix": {
                     "default": "Quick Start S3 Key Prefix"
-				},
+                },
                 "IPAddressRange": {
                     "default": "IP Address Range"
                 },
@@ -273,61 +273,60 @@
         }
     },
     "Mappings": {
-		 "AWSAMIRegionMap": {
-			"AMI": {
-				"INFAEICADMINHVM": "Informatica EIC Administration Image",
-				"INFAEICCLUSTERHVM": "Informatica EIC Cluster Image"
-			},
-			"us-east-1": {
-				"INFAEICADMINHVM": "ami-ac989abb",
-				"INFAEICCLUSTERHVM": "ami-b6999ba1"
-			},
-			"us-east-2": {
-				"INFAEICADMINHVM": "ami-0fa2f86a",
-				"INFAEICCLUSTERHVM": "ami-d5a3f9b0"
-			},
-			"us-west-1": {
-				"INFAEICADMINHVM": "ami-2cecbb4c",
-				"INFAEICCLUSTERHVM": "ami-07f3a467"
-			},
-			"us-west-2": {
-				"INFAEICADMINHVM": "ami-6f76dd0f",
-				"INFAEICCLUSTERHVM": "ami-00892260"
-			},
-			"ap-south-1": {
-				"INFAEICADMINHVM": "ami-66a6d109",
-				"INFAEICCLUSTERHVM": "ami-afbfc8c0"
-			},
-			"ap-northeast-1": {
-				"INFAEICADMINHVM": "ami-31cea256",
-				"INFAEICCLUSTERHVM": "ami-a4caa6c3"
-			},
-			"ap-northeast-2": {
-				"INFAEICADMINHVM": "ami-c7499ea9",
-				"INFAEICCLUSTERHVM": "ami-0c77a062"
-			},
-			"ap-southeast-1": {
-				"INFAEICADMINHVM": "ami-f017bb93",
-				"INFAEICCLUSTERHVM": "ami-4e10bc2d"
-			},
-			"ap-southeast-2": {
-				"INFAEICADMINHVM": "ami-a8d7efcb",
-				"INFAEICCLUSTERHVM": "ami-32d5ed51"
-			},
-			"sa-east-1": {
-				"INFAEICADMINHVM": "ami-ad3ba2c1",
-				"INFAEICCLUSTERHVM": "ami-ea38a186"
-			},
-			"eu-west-1": {
-				"INFAEICADMINHVM": "ami-6bc9ed18",
-				"INFAEICCLUSTERHVM": "ami-dcc8ecaf"
-			},
-			"eu-central-1": {
-				"INFAEICADMINHVM": "ami-0db07162",
-				"INFAEICCLUSTERHVM": "ami-37af6e58"
-			}
-		},
-
+        "AWSAMIRegionMap": {
+            "AMI": {
+                "INFAEICADMINHVM": "Informatica EIC Administration Image",
+                "INFAEICCLUSTERHVM": "Informatica EIC Cluster Image"
+            },
+            "us-east-1": {
+                "INFAEICADMINHVM": "ami-ac989abb",
+                "INFAEICCLUSTERHVM": "ami-b6999ba1"
+            },
+            "us-east-2": {
+                "INFAEICADMINHVM": "ami-0fa2f86a",
+                "INFAEICCLUSTERHVM": "ami-d5a3f9b0"
+            },
+            "us-west-1": {
+                "INFAEICADMINHVM": "ami-2cecbb4c",
+                "INFAEICCLUSTERHVM": "ami-07f3a467"
+            },
+            "us-west-2": {
+                "INFAEICADMINHVM": "ami-6f76dd0f",
+                "INFAEICCLUSTERHVM": "ami-00892260"
+            },
+            "ap-south-1": {
+                "INFAEICADMINHVM": "ami-66a6d109",
+                "INFAEICCLUSTERHVM": "ami-afbfc8c0"
+            },
+            "ap-northeast-1": {
+                "INFAEICADMINHVM": "ami-31cea256",
+                "INFAEICCLUSTERHVM": "ami-a4caa6c3"
+            },
+            "ap-northeast-2": {
+                "INFAEICADMINHVM": "ami-c7499ea9",
+                "INFAEICCLUSTERHVM": "ami-0c77a062"
+            },
+            "ap-southeast-1": {
+                "INFAEICADMINHVM": "ami-f017bb93",
+                "INFAEICCLUSTERHVM": "ami-4e10bc2d"
+            },
+            "ap-southeast-2": {
+                "INFAEICADMINHVM": "ami-a8d7efcb",
+                "INFAEICCLUSTERHVM": "ami-32d5ed51"
+            },
+            "sa-east-1": {
+                "INFAEICADMINHVM": "ami-ad3ba2c1",
+                "INFAEICCLUSTERHVM": "ami-ea38a186"
+            },
+            "eu-west-1": {
+                "INFAEICADMINHVM": "ami-6bc9ed18",
+                "INFAEICCLUSTERHVM": "ami-dcc8ecaf"
+            },
+            "eu-central-1": {
+                "INFAEICADMINHVM": "ami-0db07162",
+                "INFAEICCLUSTERHVM": "ami-37af6e58"
+            }
+        },
         "ClusterSizeMapping": {
             "Small": {
                 "InstanceType": "c4.8xlarge"
@@ -377,7 +376,7 @@
                 "Supporting": "NO"
             }
         },
-		"AWSInfoRegionMap": {
+        "AWSInfoRegionMap": {
             "ap-south-1": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
@@ -474,7 +473,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "SingleNodeCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -498,65 +497,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -637,7 +646,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "MultipleNodeCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -661,65 +670,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -800,7 +819,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "MultipleNodeCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -824,65 +843,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -971,7 +1000,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "MultipleNodeCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -995,65 +1024,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -1142,7 +1181,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "CreateLargeClusterCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -1166,65 +1205,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -1313,7 +1362,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "CreateLargeClusterCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -1337,65 +1386,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -1484,7 +1543,7 @@
             "Type": "AWS::EC2::Instance",
             "Condition": "CreateLargeClusterCnd",
             "Metadata": {
-				"AWS::CloudFormation::Authentication": {
+                "AWS::CloudFormation::Authentication": {
                     "S3AccessCreds": {
                         "type": "S3",
                         "roleName": {
@@ -1508,65 +1567,75 @@
                         "files": {
                             "/etc/profile.d/setJavaForScanners.sh": {
                                 "source": {
-									"Fn::Join": [
-										"/", [{
-												"Fn::FindInMap": [
-													"AWSInfoRegionMap", {
-														"Ref": "AWS::Region"
-													},
-													"QuickStartS3URL"
-												]
-											}, {
-												"Ref": "QSS3BucketName"
-											}, {
-												"Ref": "QSS3KeyPrefix"
-											},
-											"scripts/setJavaForScanners.sh"
-										]
-									]
-								},
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/setJavaForScanners.sh"
+                                        ]
+                                    ]
+                                },
                                 "mode": "000770",
                                 "owner": "root",
                                 "group": "root",
-								"authentication": "S3AccessCreds"
+                                "authentication": "S3AccessCreds"
                             },
-							"/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-								"source": {
-									"Fn::Join": [
-											"/", [{
-													"Fn::FindInMap": [
-														"AWSInfoRegionMap", {
-															"Ref": "AWS::Region"
-														},
-														"QuickStartS3URL"
-													]
-												}, {
-													"Ref": "QSS3BucketName"
-												}, {
-													"Ref": "QSS3KeyPrefix"
-												},
-												"scripts/replaceHostname.sh"
-											]
-										]
-								},
-								"mode": "000770",
-								"owner": "ec2-user",
-								"group": "ec2-user",
-								"authentication": "S3AccessCreds"
-							}
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
+                                "source": {
+                                    "Fn::Join": [
+                                        "/",
+                                        [
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "QuickStartS3URL"
+                                                ]
+                                            },
+                                            {
+                                                "Ref": "QSS3BucketName"
+                                            },
+                                            {
+                                                "Ref": "QSS3KeyPrefix"
+                                            },
+                                            "scripts/replaceHostname.sh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000770",
+                                "owner": "ec2-user",
+                                "group": "ec2-user",
+                                "authentication": "S3AccessCreds"
+                            }
                         }
                     },
                     "Configure": {
                         "commands": {
-							"01_ReplaceHostname": {
-								"command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-							}
-						}
+                            "01_ReplaceHostname": {
+                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                            }
+                        }
                     }
                 }
             },
             "Properties": {
-				"IamInstanceProfile": {
+                "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
                 },
                 "ImageId": {
@@ -1844,7 +1913,7 @@
                 }
             }
         },
-		"InfaDBSecurityGroup": {
+        "InfaDBSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
                 "GroupDescription": "Informatica domain access to RDS DB",
@@ -1862,7 +1931,7 @@
                     }
                 ]
             }
-		},
+        },
         "InfaDomainSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
@@ -2059,7 +2128,7 @@
                                         ]
                                     ]
                                 },
-								{
+                                {
                                     "Fn::Join": [
                                         "",
                                         [
@@ -2074,7 +2143,7 @@
                                         ]
                                     ]
                                 },
-								{
+                                {
                                     "Fn::Join": [
                                         "",
                                         [
@@ -2086,11 +2155,11 @@
                                             {
                                                 "Ref": "QSS3KeyPrefix"
                                             },
-											"/*"
+                                            "/*"
                                         ]
                                     ]
                                 }
-							]
+                            ]
                         }
                     ]
                 },
