@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Informatica Enterprise Information Catalog. This template creates Amazon EC2 instances, Elastic IPs and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Description": "Informatica Enterprise Information Catalog. This template creates Amazon EC2 instances, Elastic IPs and related resources. You will be billed for the AWS resources used if you create a stack from this template. QS(5024)",
     "Parameters": {
         "KeyName": {
             "Description": "Name of an existing Amazon EC2 keypair. You must specify this option to enable SSH access to Informatica domain and cluster instances",
