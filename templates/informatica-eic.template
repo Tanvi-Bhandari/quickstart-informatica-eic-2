@@ -297,8 +297,8 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "INFAEICADMINHVM": "Informatica EIC Administration Image",
-                "INFAEICCLUSTERHVM": "Informatica EIC Cluster Image"
+                "INFAEICADMINHVM": "AdministratorServer Image - EIC on AWS",
+                "INFAEICCLUSTERHVM": "Informatica Hadoop Cluster Image for ICS"
             },
             "ap-northeast-1": {
                 "INFAEICADMINHVM": "ami-31cea256",
