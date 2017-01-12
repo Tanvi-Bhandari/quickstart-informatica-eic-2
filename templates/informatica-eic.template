@@ -278,6 +278,38 @@
                 "INFAEICADMINHVM": "Informatica EIC Administration Image",
                 "INFAEICCLUSTERHVM": "Informatica EIC Cluster Image"
             },
+            "ap-northeast-1": {
+                "INFAEICADMINHVM": "ami-31cea256",
+                "INFAEICCLUSTERHVM": "ami-a4caa6c3"
+            },
+            "ap-northeast-2": {
+                "INFAEICADMINHVM": "ami-c7499ea9",
+                "INFAEICCLUSTERHVM": "ami-0c77a062"
+            },
+            "ap-south-1": {
+                "INFAEICADMINHVM": "ami-66a6d109",
+                "INFAEICCLUSTERHVM": "ami-afbfc8c0"
+            },
+            "ap-southeast-1": {
+                "INFAEICADMINHVM": "ami-f017bb93",
+                "INFAEICCLUSTERHVM": "ami-4e10bc2d"
+            },
+            "ap-southeast-2": {
+                "INFAEICADMINHVM": "ami-a8d7efcb",
+                "INFAEICCLUSTERHVM": "ami-32d5ed51"
+            },
+            "eu-central-1": {
+                "INFAEICADMINHVM": "ami-0db07162",
+                "INFAEICCLUSTERHVM": "ami-37af6e58"
+            },
+            "eu-west-1": {
+                "INFAEICADMINHVM": "ami-6bc9ed18",
+                "INFAEICCLUSTERHVM": "ami-dcc8ecaf"
+            },
+            "sa-east-1": {
+                "INFAEICADMINHVM": "ami-ad3ba2c1",
+                "INFAEICCLUSTERHVM": "ami-ea38a186"
+            },
             "us-east-1": {
                 "INFAEICADMINHVM": "ami-ac989abb",
                 "INFAEICCLUSTERHVM": "ami-b6999ba1"
@@ -293,38 +325,6 @@
             "us-west-2": {
                 "INFAEICADMINHVM": "ami-6f76dd0f",
                 "INFAEICCLUSTERHVM": "ami-00892260"
-            },
-            "ap-south-1": {
-                "INFAEICADMINHVM": "ami-66a6d109",
-                "INFAEICCLUSTERHVM": "ami-afbfc8c0"
-            },
-            "ap-northeast-1": {
-                "INFAEICADMINHVM": "ami-31cea256",
-                "INFAEICCLUSTERHVM": "ami-a4caa6c3"
-            },
-            "ap-northeast-2": {
-                "INFAEICADMINHVM": "ami-c7499ea9",
-                "INFAEICCLUSTERHVM": "ami-0c77a062"
-            },
-            "ap-southeast-1": {
-                "INFAEICADMINHVM": "ami-f017bb93",
-                "INFAEICCLUSTERHVM": "ami-4e10bc2d"
-            },
-            "ap-southeast-2": {
-                "INFAEICADMINHVM": "ami-a8d7efcb",
-                "INFAEICCLUSTERHVM": "ami-32d5ed51"
-            },
-            "sa-east-1": {
-                "INFAEICADMINHVM": "ami-ad3ba2c1",
-                "INFAEICCLUSTERHVM": "ami-ea38a186"
-            },
-            "eu-west-1": {
-                "INFAEICADMINHVM": "ami-6bc9ed18",
-                "INFAEICCLUSTERHVM": "ami-dcc8ecaf"
-            },
-            "eu-central-1": {
-                "INFAEICADMINHVM": "ami-0db07162",
-                "INFAEICCLUSTERHVM": "ami-37af6e58"
             }
         },
         "ClusterSizeMapping": {
