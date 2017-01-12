@@ -99,6 +99,28 @@
             "Description": "Select Yes to import the sample catalog data. You can use the sample data to get started with the product"
         }
     },
+    "Rules": {
+        "SubnetsInVPC": {
+            "Assertions": [
+                {
+                    "Assert": {
+                        "Fn::EachMemberIn": [
+                            {
+                                "Fn::ValueOfAll": [
+                                    "AWS::EC2::Subnet::Id",
+                                    "VpcId"
+                                ]
+                            },
+                            {
+                                "Fn::RefAll": "AWS::EC2::VPC::Id"
+                            }
+                        ]
+                    },
+                    "AssertDescription": "All subnets must in the VPC"
+                }
+            ]
+        }
+    },
     "Conditions": {
         "SingleNodeCnd": {
             "Fn::Equals": [
