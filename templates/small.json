@@ -33,7 +33,7 @@
     },
     {
         "ParameterKey": "InformaticaEICKeyName",
-        "ParameterValue": "informatica/bdm/EICLicense.key"
+        "ParameterValue": "informatica/eic/EICLicense.key"
     },
     {
         "ParameterKey": "InformaticaEICKeyS3Bucket",
