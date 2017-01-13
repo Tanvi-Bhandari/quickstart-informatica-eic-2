@@ -20,3 +20,9 @@ tests:
   small:
     parameter_input: small.json
     template_file: informatica-eic-master.template
+  medium:
+    parameter_input: medium.json
+    template_file: informatica-eic-master.template
+  large:
+    parameter_input: large.json
+    template_file: informatica-eic-master.template
