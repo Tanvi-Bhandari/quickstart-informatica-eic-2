@@ -2118,7 +2118,17 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "arn:aws:s3:::",
+                                            "arn:",
+                                            {
+                                                "Fn::FindInMap": [
+                                                    "AWSInfoRegionMap",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    "Partition"
+                                                ]
+                                            },
+                                            ":s3:::",
                                             {
                                                 "Ref": "InformaticaEICKeyS3Bucket"
                                             },
@@ -2126,37 +2136,6 @@
                                             {
                                                 "Ref": "InformaticaEICKeyName"
                                             }
-                                        ]
-                                    ]
-                                },
-                                {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "arn:aws:s3:::",
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            "/",
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            }
-                                        ]
-                                    ]
-                                },
-                                {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "arn:aws:s3:::",
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            "/",
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "/*"
                                         ]
                                     ]
                                 }
