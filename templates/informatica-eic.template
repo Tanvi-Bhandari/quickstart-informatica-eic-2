@@ -1863,16 +1863,6 @@
                             "Ref": "InfaDomainSecurityGroup"
                         }
                     }
-                ],
-                "SecurityGroupEgress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "0",
-                        "ToPort": "65535",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    }
                 ]
             }
         },
