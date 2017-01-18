@@ -1,5 +1,4 @@
 #!/bin/bash
-set -xe
 publicDnsName=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
 hostname $publicDnsName
 sudo su -c "sed --in-place '1s/.*/$publicDnsName/' /etc/hostname"
