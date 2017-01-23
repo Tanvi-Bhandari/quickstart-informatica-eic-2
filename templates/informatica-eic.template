@@ -2283,8 +2283,8 @@
                                         "",
                                         [
                                             "#!/bin/bash\n",
-											"chmod 600 /var/log/cfn-init.log \n",
-											"chmod 600 /var/log/cfn-init-cmd.log \n",
+                                            "chmod 600 /var/log/cfn-init.log \n",
+                                            "chmod 600 /var/log/cfn-init-cmd.log \n",
                                             "privateIp=$(curl http://169.254.169.254/latest/meta-data/local-ipv4) \n",
                                             "publicDnsName=$(curl http://169.254.169.254/latest/meta-data/public-hostname) \n",
                                             "hostname $publicDnsName \n",
@@ -2850,16 +2850,16 @@
                                 "owner": "ec2-user",
                                 "group": "ec2-user"
                             },
-							"/home/ec2-user/Mercury_Setup/cleanupScripts.sh": {
+                            "/home/ec2-user/Mercury_Setup/cleanupScripts.sh": {
                                 "content": {
                                     "Fn::Join": [
                                         "",
                                         [
                                             "#!/bin/bash\n",
-											"rm -f /home/ec2-user/Mercury_Setup/config_template.xml \n",
-											"rm -f /home/ec2-user/Mercury_Setup/launchAnalystService.sh \n",
-											"rm -f /home/ec2-user/Mercury_Setup/replaceValues.sh \n",
-											"rm -f /home/ec2-user/Mercury_Setup/replaceHostname.sh \n"
+                                            "rm -f /home/ec2-user/Mercury_Setup/config_template.xml \n",
+                                            "rm -f /home/ec2-user/Mercury_Setup/launchAnalystService.sh \n",
+                                            "rm -f /home/ec2-user/Mercury_Setup/replaceValues.sh \n",
+                                            "rm -f /home/ec2-user/Mercury_Setup/replaceHostname.sh \n"
                                         ]
                                     ]
                                 },
@@ -2903,9 +2903,9 @@
                                     "Fn::Join": [
                                         "",
                                         [
-											"touch /installation.log \n",
-											"chmod 600 /installation.log \n",
-											"sudo java -cp /home/ec2-user/mssqlutil/MSSQLUtility.jar:/home/ec2-user/mssqlutil/com.informatica.datadirect-dwsqlserver-5.1.4_B.jar mssqlutil/MSSQLUtility jdbc:informatica:sqlserver://",
+                                            "touch /installation.log \n",
+                                            "chmod 600 /installation.log \n",
+                                            "sudo java -cp /home/ec2-user/mssqlutil/MSSQLUtility.jar:/home/ec2-user/mssqlutil/com.informatica.datadirect-dwsqlserver-5.1.4_B.jar mssqlutil/MSSQLUtility jdbc:informatica:sqlserver://",
                                             {
                                                 "Fn::GetAtt": [
                                                     "InfaDB",
@@ -2934,7 +2934,7 @@
                             "05_AnalystServiceSetup": {
                                 "command": "sudo /home/ec2-user/Mercury_Setup/launchAnalystService.sh"
                             },
-							 "06_cleanupScripts": {
+                            "06_cleanupScripts": {
                                 "command": "sudo /home/ec2-user/Mercury_Setup/cleanupScripts.sh"
                             }
                         }
