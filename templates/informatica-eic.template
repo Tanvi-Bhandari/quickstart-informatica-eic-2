@@ -301,52 +301,60 @@
                 "INFAEICCLUSTERHVM": "Informatica Hadoop Cluster Image for ICS"
             },
             "ap-northeast-1": {
-                "INFAEICADMINHVM": "ami-31cea256",
-                "INFAEICCLUSTERHVM": "ami-a4caa6c3"
+                "INFAEICADMINHVM": "ami-42b0f725",
+                "INFAEICCLUSTERHVM": "ami-cbbef9ac"
             },
             "ap-northeast-2": {
-                "INFAEICADMINHVM": "ami-c7499ea9",
-                "INFAEICCLUSTERHVM": "ami-0c77a062"
+                "INFAEICADMINHVM": "ami-d42ffeba",
+                "INFAEICCLUSTERHVM": "ami-3d2ffe53"
             },
             "ap-south-1": {
-                "INFAEICADMINHVM": "ami-66a6d109",
-                "INFAEICCLUSTERHVM": "ami-afbfc8c0"
-            },
+				"INFAEICADMINHVM": "ami-07790868",
+				"INFAEICCLUSTERHVM": "ami-5f7c0d30"
+			},
             "ap-southeast-1": {
-                "INFAEICADMINHVM": "ami-f017bb93",
-                "INFAEICCLUSTERHVM": "ami-4e10bc2d"
+                "INFAEICADMINHVM": "ami-d0f246b3",
+                "INFAEICCLUSTERHVM": "ami-c2f246a1"
             },
             "ap-southeast-2": {
-                "INFAEICADMINHVM": "ami-a8d7efcb",
-                "INFAEICCLUSTERHVM": "ami-32d5ed51"
+                "INFAEICADMINHVM": "ami-6f73750c",
+                "INFAEICCLUSTERHVM": "ami-02717761"
             },
-            "eu-central-1": {
-                "INFAEICADMINHVM": "ami-0db07162",
-                "INFAEICCLUSTERHVM": "ami-37af6e58"
+			"ca-central-1": {
+                "INFAEICADMINHVM": "ami-37c17c53",
+                "INFAEICCLUSTERHVM": "ami-acc37ec8"
+            },
+			"eu-central-1": {
+                "INFAEICADMINHVM": "ami-ebd91084",
+                "INFAEICCLUSTERHVM": "ami-ead91085"
             },
             "eu-west-1": {
-                "INFAEICADMINHVM": "ami-6bc9ed18",
-                "INFAEICCLUSTERHVM": "ami-dcc8ecaf"
+                "INFAEICADMINHVM": "ami-d4f6aeb2",
+                "INFAEICCLUSTERHVM": "ami-e2e8b084"
+            },
+			"eu-west-2": {
+                "INFAEICADMINHVM": "ami-14445170",
+                "INFAEICCLUSTERHVM": "ami-2b584d4f"
             },
             "sa-east-1": {
-                "INFAEICADMINHVM": "ami-ad3ba2c1",
-                "INFAEICCLUSTERHVM": "ami-ea38a186"
+                "INFAEICADMINHVM": "ami-86781cea",
+                "INFAEICCLUSTERHVM": "ami-72791d1e"
             },
             "us-east-1": {
-                "INFAEICADMINHVM": "ami-ac989abb",
-                "INFAEICCLUSTERHVM": "ami-b6999ba1"
+                "INFAEICADMINHVM": "ami-cff900d9",
+                "INFAEICCLUSTERHVM": "ami-c0f900d6"
             },
             "us-east-2": {
-                "INFAEICADMINHVM": "ami-0fa2f86a",
-                "INFAEICCLUSTERHVM": "ami-d5a3f9b0"
+                "INFAEICADMINHVM": "ami-0b3a1f6e",
+                "INFAEICCLUSTERHVM": "ami-7a3a1f1f"
             },
             "us-west-1": {
-                "INFAEICADMINHVM": "ami-2cecbb4c",
-                "INFAEICCLUSTERHVM": "ami-07f3a467"
+                "INFAEICADMINHVM": "ami-b59dc0d5",
+                "INFAEICCLUSTERHVM": "ami-f79ec397"
             },
             "us-west-2": {
-                "INFAEICADMINHVM": "ami-6f76dd0f",
-                "INFAEICCLUSTERHVM": "ami-00892260"
+                "INFAEICADMINHVM": "ami-89c47fe9",
+                "INFAEICCLUSTERHVM": "ami-71c57e11"
             }
         },
         "ClusterSizeMapping": {
@@ -394,8 +402,14 @@
             "eu-west-1": {
                 "Supporting": "YES"
             },
+			"eu-west-2": {
+                "Supporting": "YES"
+            },
             "eu-central-1": {
                 "Supporting": "NO"
+            },
+			"ca-central-1": {
+                "Supporting": "YES"
             }
         },
         "AWSInfoRegionMap": {
@@ -419,11 +433,19 @@
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
+			"ca-central-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
             "eu-central-1": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
             "eu-west-1": {
+                "Partition": "aws",
+                "QuickStartS3URL": "https://s3.amazonaws.com"
+            },
+			"eu-west-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
