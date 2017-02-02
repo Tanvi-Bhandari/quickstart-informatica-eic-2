@@ -297,8 +297,8 @@
     "Mappings": {
         "AWSAMIRegionMap": {
             "AMI": {
-                "INFAEICADMINHVM": "AdministratorServer Image - EIC on AWS",
-                "INFAEICCLUSTERHVM": "Informatica Hadoop Cluster Image for ICS"
+                "INFAEICADMINHVM": "Administrator-Server Image EIC on AWS",
+                "INFAEICCLUSTERHVM": "Informatica Hadoop-Cluster Image for ICS"
             },
             "ap-northeast-1": {
                 "INFAEICADMINHVM": "ami-42b0f725",
@@ -309,9 +309,9 @@
                 "INFAEICCLUSTERHVM": "ami-3d2ffe53"
             },
             "ap-south-1": {
-				"INFAEICADMINHVM": "ami-07790868",
-				"INFAEICCLUSTERHVM": "ami-5f7c0d30"
-			},
+                "INFAEICADMINHVM": "ami-07790868",
+                "INFAEICCLUSTERHVM": "ami-5f7c0d30"
+            },
             "ap-southeast-1": {
                 "INFAEICADMINHVM": "ami-d0f246b3",
                 "INFAEICCLUSTERHVM": "ami-c2f246a1"
@@ -320,11 +320,11 @@
                 "INFAEICADMINHVM": "ami-6f73750c",
                 "INFAEICCLUSTERHVM": "ami-02717761"
             },
-			"ca-central-1": {
+            "ca-central-1": {
                 "INFAEICADMINHVM": "ami-37c17c53",
                 "INFAEICCLUSTERHVM": "ami-acc37ec8"
             },
-			"eu-central-1": {
+            "eu-central-1": {
                 "INFAEICADMINHVM": "ami-ebd91084",
                 "INFAEICCLUSTERHVM": "ami-ead91085"
             },
@@ -332,7 +332,7 @@
                 "INFAEICADMINHVM": "ami-d4f6aeb2",
                 "INFAEICCLUSTERHVM": "ami-e2e8b084"
             },
-			"eu-west-2": {
+            "eu-west-2": {
                 "INFAEICADMINHVM": "ami-14445170",
                 "INFAEICCLUSTERHVM": "ami-2b584d4f"
             },
@@ -402,13 +402,13 @@
             "eu-west-1": {
                 "Supporting": "YES"
             },
-			"eu-west-2": {
+            "eu-west-2": {
                 "Supporting": "YES"
             },
             "eu-central-1": {
                 "Supporting": "NO"
             },
-			"ca-central-1": {
+            "ca-central-1": {
                 "Supporting": "YES"
             }
         },
@@ -433,7 +433,7 @@
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
-			"ca-central-1": {
+            "ca-central-1": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
@@ -445,7 +445,7 @@
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
-			"eu-west-2": {
+            "eu-west-2": {
                 "Partition": "aws",
                 "QuickStartS3URL": "https://s3.amazonaws.com"
             },
