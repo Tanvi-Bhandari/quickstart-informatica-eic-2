@@ -694,11 +694,7 @@
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"HadoopGateway\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -862,11 +858,7 @@
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"MultiNodeHadoopGateway\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1037,12 +1029,7 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"MultiNodeHadoopNode2\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1214,11 +1201,7 @@
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"MultiNodeHadoopNode3\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1390,11 +1373,7 @@
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"MultiNodeHadoopNode4\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1566,11 +1545,7 @@
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"MultiNodeHadoopNode5\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1742,11 +1717,7 @@
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
-								"curl -X PUT -H 'Content-Type:' --data-binary '{\"Status\" : \"SUCCESS\",",
-                                                           "\"Reason\" : \"The instance bootstrap\",",
-                                                           "\"UniqueId\" : \"MultiNodeHadoopNode6\",",
-                                                           "\"Data\" : \"Done\"}' ",
-								"\"", {"Ref" : "WaitForClusterInstancesHandle"},"\"\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
