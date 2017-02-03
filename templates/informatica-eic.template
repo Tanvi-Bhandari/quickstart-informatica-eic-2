@@ -359,13 +359,16 @@
         },
         "ClusterSizeMapping": {
             "Small": {
-                "InstanceType": "c4.8xlarge"
+                "InstanceType": "c4.8xlarge",
+				 "NumberOfInstances" : "1"
             },
             "Medium": {
-                "InstanceType": "c4.8xlarge"
+                "InstanceType": "c4.8xlarge",
+				"NumberOfInstances" : "3"
             },
             "Large": {
-                "InstanceType": "c4.8xlarge"
+                "InstanceType": "c4.8xlarge",
+				"NumberOfInstances" : "6"
             }
         },
         "MultiAZRegionMapping": {
@@ -513,6 +516,27 @@
                 "Domain": "vpc"
             }
         },
+		"WaitForClusterInstancesHandle": {
+			"Type": "AWS::CloudFormation::WaitConditionHandle",
+			"Properties": {}
+		},
+		"WaitForClusterInstancesCondition" : {
+			"Type" : "AWS::CloudFormation::WaitCondition",
+			"Properties" : {
+				"Count": {
+					"Fn::FindInMap": [
+						"ClusterSizeMapping", {
+							"Ref": "ICSClusterSize"
+						},
+						"NumberOfInstances"
+					]
+				},
+				"Handle": {
+					"Ref": "WaitForClusterInstancesHandle"
+				},
+				"Timeout": "3600"
+			}
+		},
         "HadoopGateway": {
             "Type": "AWS::EC2::Instance",
             "Condition": "SingleNodeCnd",
@@ -669,17 +693,8 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource HadoopGateway ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"\n",
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -842,17 +857,8 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource MultiNodeHadoopGateway ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"\n",
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1023,17 +1029,7 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource MultiNodeHadoopNode2 ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1204,17 +1200,8 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource MultiNodeHadoopNode3 ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"\n",
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1385,17 +1372,8 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource MultiNodeHadoopNode4 ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"\n",
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1566,17 +1544,8 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource MultiNodeHadoopNode5 ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"\n",
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -1747,17 +1716,8 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
-                                " --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                " --resource MultiNodeHadoopNode6 ",
-                                " --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n"
+								"\n",
+								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
                         ]
                     }
@@ -3051,7 +3011,8 @@
             },
             "DependsOn": [
                 "InfaDB",
-                "AdministrationServerNetInterface"
+                "AdministrationServerNetInterface",
+				"WaitForClusterInstancesCondition"
             ]
         }
     },
