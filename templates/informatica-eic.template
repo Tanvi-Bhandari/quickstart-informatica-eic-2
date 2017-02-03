@@ -360,15 +360,15 @@
         "ClusterSizeMapping": {
             "Small": {
                 "InstanceType": "c4.8xlarge",
-				 "NumberOfInstances" : "1"
+                "NumberOfInstances": "1"
             },
             "Medium": {
                 "InstanceType": "c4.8xlarge",
-				"NumberOfInstances" : "3"
+                "NumberOfInstances": "3"
             },
             "Large": {
                 "InstanceType": "c4.8xlarge",
-				"NumberOfInstances" : "6"
+                "NumberOfInstances": "6"
             }
         },
         "MultiAZRegionMapping": {
@@ -516,27 +516,28 @@
                 "Domain": "vpc"
             }
         },
-		"WaitForClusterInstancesHandle": {
-			"Type": "AWS::CloudFormation::WaitConditionHandle",
-			"Properties": {}
-		},
-		"WaitForClusterInstancesCondition" : {
-			"Type" : "AWS::CloudFormation::WaitCondition",
-			"Properties" : {
-				"Count": {
-					"Fn::FindInMap": [
-						"ClusterSizeMapping", {
-							"Ref": "ICSClusterSize"
-						},
-						"NumberOfInstances"
-					]
-				},
-				"Handle": {
-					"Ref": "WaitForClusterInstancesHandle"
-				},
-				"Timeout": "3600"
-			}
-		},
+        "WaitForClusterInstancesHandle": {
+            "Type": "AWS::CloudFormation::WaitConditionHandle",
+            "Properties": {}
+        },
+        "WaitForClusterInstancesCondition": {
+            "Type": "AWS::CloudFormation::WaitCondition",
+            "Properties": {
+                "Count": {
+                    "Fn::FindInMap": [
+                        "ClusterSizeMapping",
+                        {
+                            "Ref": "ICSClusterSize"
+                        },
+                        "NumberOfInstances"
+                    ]
+                },
+                "Handle": {
+                    "Ref": "WaitForClusterInstancesHandle"
+                },
+                "Timeout": "3600"
+            }
+        },
         "HadoopGateway": {
             "Type": "AWS::EC2::Instance",
             "Condition": "SingleNodeCnd",
@@ -693,8 +694,12 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -857,8 +862,12 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -1029,7 +1038,11 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -1200,8 +1213,12 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -1372,8 +1389,12 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -1544,8 +1565,12 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -1716,8 +1741,12 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -3012,7 +3041,7 @@
             "DependsOn": [
                 "InfaDB",
                 "AdministrationServerNetInterface",
-				"WaitForClusterInstancesCondition"
+                "WaitForClusterInstancesCondition"
             ]
         }
     },
