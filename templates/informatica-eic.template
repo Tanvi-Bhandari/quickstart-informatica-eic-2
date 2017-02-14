@@ -301,60 +301,60 @@
                 "INFAEICCLUSTERHVM": "Informatica Hadoop-Cluster Image for ICS"
             },
             "ap-northeast-1": {
-                "INFAEICADMINHVM": "ami-42b0f725",
-                "INFAEICCLUSTERHVM": "ami-cbbef9ac"
+                "INFAEICADMINHVM": "ami-e6652781",
+                "INFAEICCLUSTERHVM": "ami-4d64262a"
             },
             "ap-northeast-2": {
-                "INFAEICADMINHVM": "ami-d42ffeba",
-                "INFAEICCLUSTERHVM": "ami-3d2ffe53"
+                "INFAEICADMINHVM": "ami-808353ee",
+                "INFAEICCLUSTERHVM": "ami-1e875770"
             },
             "ap-south-1": {
-                "INFAEICADMINHVM": "ami-07790868",
-                "INFAEICCLUSTERHVM": "ami-5f7c0d30"
+                "INFAEICADMINHVM": "ami-cfafdea0",
+                "INFAEICCLUSTERHVM": "ami-a5afdeca"
             },
             "ap-southeast-1": {
-                "INFAEICADMINHVM": "ami-d0f246b3",
-                "INFAEICCLUSTERHVM": "ami-c2f246a1"
+                "INFAEICADMINHVM": "ami-baa017d9",
+                "INFAEICCLUSTERHVM": "ami-f5a21596"
             },
             "ap-southeast-2": {
-                "INFAEICADMINHVM": "ami-6f73750c",
-                "INFAEICCLUSTERHVM": "ami-02717761"
+                "INFAEICADMINHVM": "ami-822d2ce1",
+                "INFAEICCLUSTERHVM": "ami-ff2b2a9c"
             },
             "ca-central-1": {
-                "INFAEICADMINHVM": "ami-37c17c53",
-                "INFAEICCLUSTERHVM": "ami-acc37ec8"
+                "INFAEICADMINHVM": "ami-e2a11c86",
+                "INFAEICCLUSTERHVM": "ami-eda91489"
             },
             "eu-central-1": {
-                "INFAEICADMINHVM": "ami-ebd91084",
-                "INFAEICCLUSTERHVM": "ami-ead91085"
+                "INFAEICADMINHVM": "ami-467ab229",
+                "INFAEICCLUSTERHVM": "ami-c867afa7"
             },
             "eu-west-1": {
-                "INFAEICADMINHVM": "ami-d4f6aeb2",
-                "INFAEICCLUSTERHVM": "ami-e2e8b084"
+                "INFAEICADMINHVM": "ami-d1381fb7",
+                "INFAEICCLUSTERHVM": "ami-e8381f8e"
             },
             "eu-west-2": {
-                "INFAEICADMINHVM": "ami-14445170",
-                "INFAEICCLUSTERHVM": "ami-2b584d4f"
+                "INFAEICADMINHVM": "ami-891401ed",
+                "INFAEICCLUSTERHVM": "ami-951500f1"
             },
             "sa-east-1": {
-                "INFAEICADMINHVM": "ami-86781cea",
-                "INFAEICCLUSTERHVM": "ami-72791d1e"
+                "INFAEICADMINHVM": "ami-e311768f",
+                "INFAEICCLUSTERHVM": "ami-6712750b"
             },
             "us-east-1": {
-                "INFAEICADMINHVM": "ami-cff900d9",
-                "INFAEICCLUSTERHVM": "ami-c0f900d6"
+                "INFAEICADMINHVM": "ami-a39456b5",
+                "INFAEICCLUSTERHVM": "ami-5e925048"
             },
             "us-east-2": {
-                "INFAEICADMINHVM": "ami-0b3a1f6e",
-                "INFAEICCLUSTERHVM": "ami-7a3a1f1f"
+                "INFAEICADMINHVM": "ami-75e8cd10",
+                "INFAEICCLUSTERHVM": "ami-24f5d041"
             },
             "us-west-1": {
-                "INFAEICADMINHVM": "ami-b59dc0d5",
-                "INFAEICCLUSTERHVM": "ami-f79ec397"
+                "INFAEICADMINHVM": "ami-3db5e95d",
+                "INFAEICCLUSTERHVM": "ami-10b4e870"
             },
             "us-west-2": {
-                "INFAEICADMINHVM": "ami-89c47fe9",
-                "INFAEICCLUSTERHVM": "ami-71c57e11"
+                "INFAEICADMINHVM": "ami-0da92d6d",
+                "INFAEICCLUSTERHVM": "ami-68a82c08"
             }
         },
         "ClusterSizeMapping": {
@@ -540,98 +540,6 @@
         "HadoopGateway": {
             "Type": "AWS::EC2::Instance",
             "Condition": "SingleNodeCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
-                        }
-                    }
-                }
-            },
             "Properties": {
                 "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
@@ -680,18 +588,12 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource HadoopGateway ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
+								"sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
+								"service sshd status | grep -i -q running\n",
+								"if [ $? != 0 ]; then\n",
+								"    service sshd restart\n",
+								"fi\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
 								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
@@ -704,98 +606,6 @@
         "MultiNodeHadoopGateway": {
             "Type": "AWS::EC2::Instance",
             "Condition": "MultipleNodeCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
-                        }
-                    }
-                }
-            },
             "Properties": {
                 "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
@@ -844,18 +654,12 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource MultiNodeHadoopGateway ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
+								"sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
+								"service sshd status | grep -i -q running\n",
+								"if [ $? != 0 ]; then\n",
+								"    service sshd restart\n",
+								"fi\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
 								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
@@ -868,98 +672,6 @@
         "MultiNodeHadoopNode2": {
             "Type": "AWS::EC2::Instance",
             "Condition": "MultipleNodeCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
-                        }
-                    }
-                }
-            },
             "Properties": {
                 "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
@@ -1016,121 +728,18 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource MultiNodeHadoopNode2 ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
+                                "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
+								"service sshd status | grep -i -q running\n",
+								"if [ $? != 0 ]; then\n",
+								"    service sshd restart\n",
+								"fi\n",
                                 "# Signal the status from cfn-init\n",
+								"\n",
 								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
                             ]
-                        ]
                     }
                 }
-            }
-        },
-        "MultiNodeHadoopNode3": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "MultipleNodeCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
-                        }
-                    }
-                }
-            },
             "Properties": {
                 "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
@@ -1173,7 +782,6 @@
                                 "-",
                                 [
                                     "HadoopNode",
-                                    "3"
                                 ]
                             ]
                         }
@@ -1187,17 +795,6 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource MultiNodeHadoopNode3 ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
@@ -1208,273 +805,14 @@
                 }
             }
         },
-        "MultiNodeHadoopNode4": {
             "Type": "AWS::EC2::Instance",
             "Condition": "CreateLargeClusterCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
                         },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
                     }
                 },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
                         }
                     }
                 }
-            },
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
-                },
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "INFAEICCLUSTERHVM"
-                    ]
-                },
-                "InstanceType": {
-                    "Fn::FindInMap": [
-                        "ClusterSizeMapping",
-                        {
-                            "Ref": "ICSClusterSize"
-                        },
-                        "InstanceType"
-                    ]
-                },
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "SecurityGroupIds": [
-                    {
-                        "Ref": "AdditionalICSSecurityGroup"
-                    }
-                ],
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
-                                "-",
-                                [
-                                    "HadoopNode",
-                                    "4"
-                                ]
-                            ]
-                        }
-                    }
-                ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash\n",
-                                "sudo yum update -y aws-cfn-bootstrap\n",
-                                "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource MultiNodeHadoopNode4 ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n",
-                                "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
-                            ]
-                        ]
-                    }
-                }
-            }
-        },
-        "MultiNodeHadoopNode5": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "CreateLargeClusterCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
-                        }
-                    }
-                }
-            },
             "Properties": {
                 "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
@@ -1531,17 +869,6 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource MultiNodeHadoopNode5 ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
@@ -1555,98 +882,6 @@
         "MultiNodeHadoopNode6": {
             "Type": "AWS::EC2::Instance",
             "Condition": "CreateLargeClusterCnd",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
-                        },
-                        "buckets": [
-                            {
-                                "Ref": "QSS3BucketName"
-                            }
-                        ]
-                    }
-                },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
-                            "Install",
-                            "Configure"
-                        ]
-                    },
-                    "Install": {
-                        "files": {
-                            "/etc/profile.d/setJavaForScanners.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/setJavaForScanners.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "root",
-                                "group": "root",
-                                "authentication": "S3AccessCreds"
-                            },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "source": {
-                                    "Fn::Join": [
-                                        "/",
-                                        [
-                                            {
-                                                "Fn::FindInMap": [
-                                                    "AWSInfoRegionMap",
-                                                    {
-                                                        "Ref": "AWS::Region"
-                                                    },
-                                                    "QuickStartS3URL"
-                                                ]
-                                            },
-                                            {
-                                                "Ref": "QSS3BucketName"
-                                            },
-                                            {
-                                                "Ref": "QSS3KeyPrefix"
-                                            },
-                                            "scripts/replaceHostname.sh"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
-                            }
-                        }
-                    },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
-                            }
-                        }
-                    }
-                }
-            },
             "Properties": {
                 "IamInstanceProfile": {
                     "Ref": "InstanceProfile"
@@ -1703,18 +938,6 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
-                                "         --stack ",
-                                {
-                                    "Ref": "AWS::StackName"
-                                },
-                                "         --resource MultiNodeHadoopNode6 ",
-                                "         --configsets InstallAndRun ",
-                                "         --region ",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n",
                                 "# Signal the status from cfn-init\n",
 								"\n",
 								"/opt/aws/bin/cfn-signal -e $? -r \"Instance bootstrap completed\" '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
