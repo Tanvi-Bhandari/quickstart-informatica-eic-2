@@ -589,15 +589,19 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-								"sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
+                                "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -655,15 +659,19 @@
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-								"sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
+                                "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -731,13 +739,17 @@
                                 "# Install the files and packages from the metadata\n",
                                 "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -805,13 +817,17 @@
                                 "# Install the files and packages from the metadata\n",
                                 "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -878,14 +894,18 @@
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
                                 "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
-								"\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -953,13 +973,17 @@
                                 "# Install the files and packages from the metadata\n",
                                 "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
                                 "\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
@@ -1026,14 +1050,18 @@
                                 "sudo yum update -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
                                 "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh\n",
-								"\n",
-								"service sshd status | grep -i -q running\n",
-								"if [ $? != 0 ]; then\n",
-								"    service sshd restart\n",
-								"fi\n",
+                                "\n",
+                                "service sshd status | grep -i -q running\n",
+                                "if [ $? != 0 ]; then\n",
+                                "    service sshd restart\n",
+                                "fi\n",
                                 "# Signal the status from cfn-init\n",
-								"\n",
-								"/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitForClusterInstancesHandle" },"'\n"
+                                "\n",
+                                "/opt/aws/bin/cfn-signal -e $? '",
+                                {
+                                    "Ref": "WaitForClusterInstancesHandle"
+                                },
+                                "'\n"
                             ]
                         ]
                     }
