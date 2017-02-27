@@ -2350,7 +2350,7 @@
             },
             "CreationPolicy": {
                 "ResourceSignal": {
-                    "Timeout": "PT2H55M"
+                    "Timeout": "PT5H"
                 }
             },
             "DependsOn": [
