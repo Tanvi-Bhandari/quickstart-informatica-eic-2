@@ -301,59 +301,59 @@
                 "INFAEICCLUSTERHVM": "Informatica Hadoop-Cluster Image for ICS"
             },
             "ap-northeast-1": {
-                "INFAEICADMINHVM": "ami-e6652781",
+                "INFAEICADMINHVM": "ami-806838e7",
                 "INFAEICCLUSTERHVM": "ami-4d64262a"
             },
             "ap-northeast-2": {
-                "INFAEICADMINHVM": "ami-808353ee",
+                "INFAEICADMINHVM": "ami-46805328",
                 "INFAEICCLUSTERHVM": "ami-1e875770"
             },
             "ap-south-1": {
-                "INFAEICADMINHVM": "ami-cfafdea0",
+                "INFAEICADMINHVM": "ami-3dbbcb52",
                 "INFAEICCLUSTERHVM": "ami-a5afdeca"
             },
             "ap-southeast-1": {
-                "INFAEICADMINHVM": "ami-baa017d9",
+                "INFAEICADMINHVM": "ami-ce8536ad",
                 "INFAEICCLUSTERHVM": "ami-f5a21596"
             },
             "ap-southeast-2": {
-                "INFAEICADMINHVM": "ami-822d2ce1",
+                "INFAEICADMINHVM": "ami-598b893a",
                 "INFAEICCLUSTERHVM": "ami-ff2b2a9c"
             },
             "ca-central-1": {
-                "INFAEICADMINHVM": "ami-e2a11c86",
+                "INFAEICADMINHVM": "ami-7f53ee1b",
                 "INFAEICCLUSTERHVM": "ami-eda91489"
             },
             "eu-central-1": {
-                "INFAEICADMINHVM": "ami-467ab229",
+                "INFAEICADMINHVM": "ami-af71a5c0",
                 "INFAEICCLUSTERHVM": "ami-c867afa7"
             },
             "eu-west-1": {
-                "INFAEICADMINHVM": "ami-d1381fb7",
+                "INFAEICADMINHVM": "ami-957d48f3",
                 "INFAEICCLUSTERHVM": "ami-e8381f8e"
             },
             "eu-west-2": {
-                "INFAEICADMINHVM": "ami-891401ed",
+                "INFAEICADMINHVM": "ami-14918470",
                 "INFAEICCLUSTERHVM": "ami-951500f1"
             },
             "sa-east-1": {
-                "INFAEICADMINHVM": "ami-e311768f",
+                "INFAEICADMINHVM": "ami-144a2b78",
                 "INFAEICCLUSTERHVM": "ami-6712750b"
             },
             "us-east-1": {
-                "INFAEICADMINHVM": "ami-a39456b5",
+                "INFAEICADMINHVM": "ami-6604a470",
                 "INFAEICCLUSTERHVM": "ami-5e925048"
             },
             "us-east-2": {
-                "INFAEICADMINHVM": "ami-75e8cd10",
+                "INFAEICADMINHVM": "ami-ce7753ab",
                 "INFAEICCLUSTERHVM": "ami-24f5d041"
             },
             "us-west-1": {
-                "INFAEICADMINHVM": "ami-3db5e95d",
+                "INFAEICADMINHVM": "ami-5782db37",
                 "INFAEICCLUSTERHVM": "ami-10b4e870"
             },
             "us-west-2": {
-                "INFAEICADMINHVM": "ami-0da92d6d",
+                "INFAEICADMINHVM": "ami-3aa7285a",
                 "INFAEICCLUSTERHVM": "ami-68a82c08"
             }
         },
