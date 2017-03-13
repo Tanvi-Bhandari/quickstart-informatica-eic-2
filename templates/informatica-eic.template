@@ -477,6 +477,7 @@
     "Resources": {
         "ElasticIpNode1": {
             "Type": "AWS::EC2::EIP",
+            "DependsOn": "WaitForClusterInstancesCondition",
             "Properties": {
                 "Domain": "vpc"
             }
@@ -484,6 +485,7 @@
         "ElasticIpNode2": {
             "Type": "AWS::EC2::EIP",
             "Condition": "MultipleNodeCnd",
+            "DependsOn": "WaitForClusterInstancesCondition",
             "Properties": {
                 "Domain": "vpc"
             }
@@ -491,6 +493,7 @@
         "ElasticIpNode3": {
             "Type": "AWS::EC2::EIP",
             "Condition": "MultipleNodeCnd",
+            "DependsOn": "WaitForClusterInstancesCondition",
             "Properties": {
                 "Domain": "vpc"
             }
@@ -498,6 +501,7 @@
         "ElasticIpNode4": {
             "Type": "AWS::EC2::EIP",
             "Condition": "CreateLargeClusterCnd",
+            "DependsOn": "WaitForClusterInstancesCondition",
             "Properties": {
                 "Domain": "vpc"
             }
@@ -505,6 +509,7 @@
         "ElasticIpNode5": {
             "Type": "AWS::EC2::EIP",
             "Condition": "CreateLargeClusterCnd",
+            "DependsOn": "WaitForClusterInstancesCondition",
             "Properties": {
                 "Domain": "vpc"
             }
@@ -512,6 +517,7 @@
         "ElasticIpNode6": {
             "Type": "AWS::EC2::EIP",
             "Condition": "CreateLargeClusterCnd",
+            "DependsOn": "WaitForClusterInstancesCondition",
             "Properties": {
                 "Domain": "vpc"
             }
