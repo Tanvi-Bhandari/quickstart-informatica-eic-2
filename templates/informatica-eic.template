@@ -527,7 +527,7 @@
                     {
                         "Ref": "AdditionalICSSecurityGroup"
                     },
-					{
+                    {
                         "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
@@ -552,7 +552,7 @@
                     {
                         "Ref": "AdditionalICSSecurityGroup"
                     },
-					{
+                    {
                         "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
@@ -577,7 +577,7 @@
                     {
                         "Ref": "AdditionalICSSecurityGroup"
                     },
-					{
+                    {
                         "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
@@ -602,7 +602,7 @@
                     {
                         "Ref": "AdditionalICSSecurityGroup"
                     },
-					{
+                    {
                         "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
@@ -627,7 +627,7 @@
                     {
                         "Ref": "AdditionalICSSecurityGroup"
                     },
-					{
+                    {
                         "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
@@ -652,7 +652,7 @@
                     {
                         "Ref": "AdditionalICSSecurityGroup"
                     },
-					{
+                    {
                         "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
@@ -1413,7 +1413,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "8088",
                         "ToPort": "8088",
@@ -1421,7 +1421,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "8042",
                         "ToPort": "8042",
@@ -1429,7 +1429,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "50070",
                         "ToPort": "50070",
@@ -1437,7 +1437,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "19888",
                         "ToPort": "19888",
@@ -1445,11 +1445,16 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "0",
                         "ToPort": "65535",
-                        "SourceSecurityGroupId": { "Fn::GetAtt" : [ "InternalAdditionalICSSecurityGroup", "GroupId" ] }
+                        "SourceSecurityGroupId": {
+                            "Fn::GetAtt": [
+                                "InternalAdditionalICSSecurityGroup",
+                                "GroupId"
+                            ]
+                        }
                     },
                     {
                         "IpProtocol": "tcp",
@@ -1462,15 +1467,15 @@
                 ]
             }
         },
-		"InternalAdditionalICSSecurityGroup": {
-		"Type": "AWS::EC2::SecurityGroup",
-		"Properties": {
-			"GroupDescription": "To enable all ports between hadoop machines only.",
-			"VpcId": {
-				"Ref": "VPCID"
-			}
-			}
-		},
+        "InternalAdditionalICSSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "To enable all ports between hadoop machines only.",
+                "VpcId": {
+                    "Ref": "VPCID"
+                }
+            }
+        },
         "InfaDBSubnetGroup": {
             "Type": "AWS::RDS::DBSubnetGroup",
             "Properties": {
@@ -1578,7 +1583,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "8095",
                         "ToPort": "8095",
@@ -1586,7 +1591,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "8785",
                         "ToPort": "8785",
@@ -1626,7 +1631,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "22",
                         "ToPort": "22",
@@ -1634,7 +1639,7 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-					{
+                    {
                         "IpProtocol": "tcp",
                         "FromPort": "21000",
                         "ToPort": "22000",
