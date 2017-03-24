@@ -526,6 +526,9 @@
                 "GroupSet": [
                     {
                         "Ref": "AdditionalICSSecurityGroup"
+                    },
+					{
+                        "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
                 "SourceDestCheck": "true",
@@ -548,6 +551,9 @@
                 "GroupSet": [
                     {
                         "Ref": "AdditionalICSSecurityGroup"
+                    },
+					{
+                        "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
                 "SourceDestCheck": "true",
@@ -570,6 +576,9 @@
                 "GroupSet": [
                     {
                         "Ref": "AdditionalICSSecurityGroup"
+                    },
+					{
+                        "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
                 "SourceDestCheck": "true",
@@ -592,6 +601,9 @@
                 "GroupSet": [
                     {
                         "Ref": "AdditionalICSSecurityGroup"
+                    },
+					{
+                        "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
                 "SourceDestCheck": "true",
@@ -614,6 +626,9 @@
                 "GroupSet": [
                     {
                         "Ref": "AdditionalICSSecurityGroup"
+                    },
+					{
+                        "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
                 "SourceDestCheck": "true",
@@ -636,6 +651,9 @@
                 "GroupSet": [
                     {
                         "Ref": "AdditionalICSSecurityGroup"
+                    },
+					{
+                        "Ref": "InternalAdditionalICSSecurityGroup"
                     }
                 ],
                 "SourceDestCheck": "true",
@@ -1389,11 +1407,49 @@
                 "SecurityGroupIngress": [
                     {
                         "IpProtocol": "tcp",
-                        "FromPort": "0",
-                        "ToPort": "65535",
+                        "FromPort": "8080",
+                        "ToPort": "8080",
                         "CidrIp": {
                             "Ref": "IPAddressRange"
                         }
+                    },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "8088",
+                        "ToPort": "8088",
+                        "CidrIp": {
+                            "Ref": "IPAddressRange"
+                        }
+                    },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "8042",
+                        "ToPort": "8042",
+                        "CidrIp": {
+                            "Ref": "IPAddressRange"
+                        }
+                    },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "50070",
+                        "ToPort": "50070",
+                        "CidrIp": {
+                            "Ref": "IPAddressRange"
+                        }
+                    },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "19888",
+                        "ToPort": "19888",
+                        "CidrIp": {
+                            "Ref": "IPAddressRange"
+                        }
+                    },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "SourceSecurityGroupId": { "Fn::GetAtt" : [ "InternalAdditionalICSSecurityGroup", "GroupId" ] }
                     },
                     {
                         "IpProtocol": "tcp",
@@ -1406,6 +1462,15 @@
                 ]
             }
         },
+		"InternalAdditionalICSSecurityGroup": {
+		"Type": "AWS::EC2::SecurityGroup",
+		"Properties": {
+			"GroupDescription": "To enable all ports between hadoop machines only.",
+			"VpcId": {
+				"Ref": "VPCID"
+			}
+			}
+		},
         "InfaDBSubnetGroup": {
             "Type": "AWS::RDS::DBSubnetGroup",
             "Properties": {
@@ -1513,6 +1578,22 @@
                             "Ref": "IPAddressRange"
                         }
                     },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "8095",
+                        "ToPort": "8095",
+                        "CidrIp": {
+                            "Ref": "IPAddressRange"
+                        }
+                    },
+					{
+                        "IpProtocol": "tcp",
+                        "FromPort": "8785",
+                        "ToPort": "8785",
+                        "CidrIp": {
+                            "Ref": "IPAddressRange"
+                        }
+                    },
                     {
                         "IpProtocol": "tcp",
                         "FromPort": "8085",
@@ -1531,56 +1612,8 @@
                     },
                     {
                         "IpProtocol": "tcp",
-                        "FromPort": "8105",
-                        "ToPort": "8105",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8095",
-                        "ToPort": "8095",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8084",
-                        "ToPort": "8084",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
                         "FromPort": "8089",
                         "ToPort": "8089",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8785",
-                        "ToPort": "8785",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "10250",
-                        "ToPort": "10250",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "7333",
-                        "ToPort": "7333",
                         "CidrIp": {
                             "Ref": "IPAddressRange"
                         }
@@ -1593,18 +1626,18 @@
                             "Ref": "IPAddressRange"
                         }
                     },
-                    {
+					{
                         "IpProtocol": "tcp",
-                        "FromPort": "0",
-                        "ToPort": "65535",
+                        "FromPort": "22",
+                        "ToPort": "22",
                         "CidrIp": {
                             "Ref": "IPAddressRange"
                         }
                     },
-                    {
+					{
                         "IpProtocol": "tcp",
-                        "FromPort": "22",
-                        "ToPort": "22",
+                        "FromPort": "21000",
+                        "ToPort": "22000",
                         "CidrIp": {
                             "Ref": "IPAddressRange"
                         }
