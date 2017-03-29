@@ -9,8 +9,8 @@ Deployment steps:
 1. Sign up for an AWS account at http://aws.amazon.com, select a region, and create a key pair.
 2. Obtain a license for Enterprise Information Catalog from [Informatica](https://now.informatica.com/enterprise-information-catalog-aws-contact-us.html).
 3. In the AWS CloudFormation console, launch one of the following templates to build a new stack:
-  * https://s3.amazonaws.com/quickstart-reference/informatica/eic/latest/templates/informatica-eic-master.template (to deploy Informatica EIC into a new VPC)
-  * https://s3.amazonaws.com/quickstart-reference/informatica/eic/latest/templates/informatica-eic.template (to deploy Informatica EIC into your existing VPC)
+  * [/templates/informatica-eic-master.template](https://s3.amazonaws.com/quickstart-reference/informatica/eic/latest/templates/informatica-eic-master.template) (to deploy Informatica Enterprise Information Catalog into a new VPC)
+  * [/templates/informatica-eic.template](https://s3.amazonaws.com/quickstart-reference/informatica/eic/latest/templates/informatica-eic.template) (to deploy Informatica Enterprise Information Catalog into your existing VPC)
 
 To customize your deployment, you can choose different instance types for your resources and configure the size of the Informatica embedded cluster. You can also choose to import sample catalog data to start using Enterprise Information Catalog on AWS.
 
