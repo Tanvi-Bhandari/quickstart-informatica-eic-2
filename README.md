@@ -15,3 +15,4 @@ Deployment steps:
 To customize your deployment, you can choose different instance types for your resources and configure the size of the Informatica embedded cluster. You can also choose to import sample catalog data to start using Enterprise Information Catalog on AWS.
 
 For detailed deployment and configuration instructions, see the [Quick Start deployment guide](https://s3.amazonaws.com/quickstart-reference/informatica/eic/latest/doc/informatica-enterprise-information-catalog-on-the-aws-cloud.pdf).
+ 
