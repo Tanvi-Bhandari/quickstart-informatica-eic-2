@@ -2,7 +2,7 @@
 
 This Quick Start deploys Enterprise Information Catalog from Informatica on the AWS Cloud. Enterprise Information Catalog helps you discover and catalog assets along with their relationships from data sources across your enterprise. Assets are data objects such as tables, columns, reports, views, and schemas, and might exist in relational databases, purpose-built applications, ETL or business intelligence tools, and big data systems.
 
-![Quick Start Informatica Enterprise Information Catalog Design Architecture](https://d0.awsstatic.com/partner-network/QuickStart/datasheets/informatica-eic-architecture-on-aws.png)
+![Quick Start Informatica Enterprise Information Catalog Design Architecture]()
 
 Deployment steps:
 
