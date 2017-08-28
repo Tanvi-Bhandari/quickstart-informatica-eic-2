@@ -177,14 +177,6 @@
                 },
                 "YES"
             ]
-        },
-        "DoNotSupportDbM4Class": {
-            "Fn::Equals": [
-                {
-                    "Ref": "AWS::Region"
-                },
-                "sa-east-1"
-            ]
         }
     },
     "Metadata": {
@@ -838,6 +830,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -921,6 +915,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1012,6 +1008,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1103,6 +1101,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1194,6 +1194,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1285,6 +1287,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1376,6 +1380,8 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
+                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
+                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1500,13 +1506,7 @@
                 },
                 "StorageType": "gp2",
                 "LicenseModel": "license-included",
-                "DBInstanceClass": {
-                    "Fn::If": [
-                        "DoNotSupportDbM4Class",
-                        "db.m3.2xlarge",
-                        "db.m4.2xlarge"
-                    ]
-                },
+                "DBInstanceClass": "db.m4.2xlarge",
                 "DBSubnetGroupName": {
                     "Ref": "InfaDBSubnetGroup"
                 },
