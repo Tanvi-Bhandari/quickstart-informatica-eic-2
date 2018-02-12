@@ -1,192 +1,266 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Informatica Enterprise Information Catalog. This template creates Amazon EC2 instances, Elastic IPs and related resources. You will be billed for the AWS resources used if you create a stack from this template. QS(5024)",
-    "Parameters": {
-        "KeyName": {
-            "Description": "Name of an existing Amazon EC2 keypair. You must specify this option to enable SSH access to Informatica domain and cluster instances",
-            "Type": "AWS::EC2::KeyPair::KeyName"
+    "AWSTemplateFormatVersion":"2010-09-09",
+    "Description":"Informatica Enterprise Information Catalog. This template creates Amazon EC2 instances, Elastic IPs and related resources. You will be billed for the AWS resources used if you create a stack from this template. QS(5024)",
+    "Parameters":{
+        "KeyName":{
+            "Description":"Name of an existing Amazon EC2 keypair. You must specify this option to enable SSH access to Informatica domain and cluster instances",
+            "Type":"AWS::EC2::KeyPair::KeyName",
+            "MinLength":"1",
+            "ConstraintDescription":"Specifying EC2 keypair is mandatory"
         },
-        "VPCID": {
-            "Description": "ID of your existing VPC where you want to deploy Enterprise Information Catalog",
-            "Type": "AWS::EC2::VPC::Id"
+        "VPCID":{
+            "Description":"ID of your existing VPC where you want to deploy Enterprise Information Catalog",
+            "Type":"AWS::EC2::VPC::Id",
+            "MinLength":"1",
+            "ConstraintDescription":"Specifying VPC ID is mandatory "
         },
-        "InformaticaEICKeyS3Bucket": {
-            "Type": "String",
-            "Description": "Name of the Amazon S3 bucket in your account that contains the Informatica Enterprise Information Catalog Key"
+        "InformaticaEICKeyS3Bucket":{
+            "Type":"String",
+            "Description":"Name of the Amazon S3 bucket in your account that contains the Informatica Enterprise Information Catalog Key",
+            "MinLength":"1",
+            "ConstraintDescription":"Informatica EIC Key S3 Bucket is mandatory"
         },
-        "InformaticaEICKeyName": {
-            "Type": "String",
-            "Description": "The Informatica Enterprise Information Catalog license key name. For example, <license key name> or <bucket sub folder/license key name>"
+        "InformaticaEICKeyName":{
+            "Type":"String",
+            "Description":"The Informatica Enterprise Information Catalog license key name. For example, <license key name> or <bucket sub folder/license key name>",
+            "MinLength":"1",
+            "ConstraintDescription":"Informatica EIC Key Name is mandatory"
         },
-        "InformaticaAdminUsername": {
-            "Description": "Username to access Informatica Administrator",
-            "Type": "String"
+        "InformaticaAdminUsername":{
+            "Description":"Username to access Informatica Administrator",
+            "Type":"String",
+            "Default":"Administrator",
+            "MinLength":"1",
+            "ConstraintDescription":"Informatica Admin Username is mandatory"
         },
-        "InformaticaAdminPassword": {
-            "Description": "Password to access Informatica Administrator",
-            "Type": "String",
-            "NoEcho": "True"
+        "InformaticaAdminPassword":{
+            "Description":"Password to access Informatica Administrator",
+            "Type":"String",
+            "NoEcho":"True",
+            "MinLength":"1",
+            "ConstraintDescription":"Informatica Admin Password is mandatory"
         },
-        "InformaticaServerSubnetID": {
-            "Description": "Select a publicly accessible subnet ID for the Informatica domain",
-            "Type": "AWS::EC2::Subnet::Id"
+        "ConfirmInformaticaAdminPassword":{
+            "Type":"String",
+            "NoEcho":"True",
+            "MinLength":"1",
+            "ConstraintDescription":"Confirm Password is mandatory "
         },
-        "InformaticaServerInstanceType": {
-            "Type": "String",
-            "Default": "c4.4xlarge",
-            "AllowedValues": [
+        "InformaticaServerSubnetID":{
+            "Description":"Select a publicly accessible subnet ID for the Informatica domain",
+            "Type":"AWS::EC2::Subnet::Id",
+            "MinLength":"1",
+            "ConstraintDescription":"Specifying subnet ID is mandatory"
+        },
+        "InformaticaServerInstanceType":{
+            "Type":"String",
+            "Default":"c4.4xlarge",
+            "AllowedValues":[
                 "c4.4xlarge",
                 "c4.8xlarge"
             ],
-            "Description": "The EC2 instance type for the instance that hosts the Informatica domain. Default is c4.4xlarge"
+            "Description":"The EC2 instance type for the instance that hosts the Informatica domain. Default is c4.4xlarge"
         },
-        "DBUser": {
-            "Description": "Username for the database instance associated with Informatica domain and services (such as Model Repository Service, Data Integration Service, Content Management Service)",
-            "Type": "String",
-            "MinLength": "8",
-            "MaxLength": "18"
+        "DBUser":{
+            "Description":"Username for the database instance associated with Informatica domain and services (such as Model Repository Service, Data Integration Service, Content Management Service)",
+            "MaxLength":"64",
+            "MinLength":"1",
+            "AllowedPattern":"[a-zA-Z][a-zA-Z0-9]*",
+            "ConstraintDescription":"Database Username should be alphanumeric and start with an alphabet only ",
+            "Type":"String"
         },
-        "DBPassword": {
-            "Description": "Password for the database instance associated with Informatica domain and services (such as Model Repository Service, Data Integration Service, Content Management Service)",
-            "Type": "String",
-            "NoEcho": "True",
-            "MinLength": "8",
-            "MaxLength": "18"
+        "DBPassword":{
+            "Description":"Password for the database instance associated with Informatica domain and services (such as Model Repository Service, Data Integration Service, Content Management Service)",
+            "MaxLength":"128",
+            "MinLength":"8",
+            "NoEcho":"True",
+            "AllowedPattern":"[^/\"@]*",
+            "ConstraintDescription":"Database Password should be atleast 8 characters and cannot contain \" @ and ^ ",
+            "Type":"String"
         },
-        "DBSubnetIDs": {
-            "Description": "IDs of two private subnets in the selected VPC. These must be in different Availability Zones in the selected VPC",
-            "Type": "List<AWS::EC2::Subnet::Id>"
+        "ConfirmDBPassword":{
+            "NoEcho":"True",
+            "Type":"String",
+            "MinLength":"1",
+            "ConstraintDescription":"Confirm Password is mandatory "
         },
-        "ICSClusterSize": {
-            "Type": "String",
-            "Default": "Small",
-            "AllowedValues": [
+        "DBSubnetIDs":{
+            "Description":"IDs of two private subnets in the selected VPC. These must be in different Availability Zones in the selected VPC",
+            "Type":"List<AWS::EC2::Subnet::Id>"
+        },
+        "ICSClusterSize":{
+            "Type":"String",
+            "Default":"Small",
+            "AllowedValues":[
                 "Small",
                 "Medium",
                 "Large"
             ],
-            "Description": "The cluster size (i.) Small (c4.8xlarge, single node) (ii.) Medium (c4.8xlarge, three nodes) (iii.)  Large (c4.8xlarge, six nodes)"
+            "Description":"The cluster size (i.) Small (c4.8xlarge, single node) (ii.) Medium (c4.8xlarge, three nodes) (iii.)  Large (c4.8xlarge, six nodes)"
         },
-        "QSS3BucketName": {
-            "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
-            "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
-            "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Type": "String"
+        "QSS3BucketName":{
+            "AllowedPattern":"^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
+            "ConstraintDescription":"Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Default":"quickstart-reference",
+            "Description":"S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Type":"String"
         },
-        "QSS3KeyPrefix": {
-            "AllowedPattern": "^[0-9a-zA-Z-]+(/[0-9a-zA-Z-]+)*$",
-            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
-            "Default": "informatica/eic/latest",
-            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
-            "Type": "String"
+        "QSS3KeyPrefix":{
+            "AllowedPattern":"^[0-9a-zA-Z-]+(/[0-9a-zA-Z-]+)*$",
+            "ConstraintDescription":"Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
+            "Default":"informatica/eic/latest",
+            "Description":"S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/). It cannot start or end with forward slash (/) because they are automatically appended.",
+            "Type":"String"
         },
-        "IPAddressRange": {
-            "Description": "The CIDR IP range that is permitted to access the Informatica domain and the Informatica embedded cluster",
-            "Type": "String",
-            "MinLength": "9",
-            "MaxLength": "18",
-            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-            "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+        "IPAddressRange":{
+            "Description":"The CIDR IP range that is permitted to access the Informatica domain and the Informatica embedded cluster",
+            "Type":"String",
+            "Default":"0.0.0.0/0",
+            "MinLength":"9",
+            "MaxLength":"18",
+            "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription":"must be a valid IP CIDR range of the form x.x.x.x/x."
         },
-        "ImportSampleData": {
-            "Type": "String",
-            "Default": "Yes",
-            "AllowedValues": [
+        "ImportSampleData":{
+            "Type":"String",
+            "Default":"Yes",
+            "AllowedValues":[
                 "Yes",
                 "No"
             ],
-            "Description": "Select Yes to import the sample catalog data. You can use the sample data to get started with the product"
+            "Description":"Select Yes to import the sample catalog data. You can use the sample data to get started with the product"
         }
     },
-    "Rules": {
-        "SubnetsInVPC": {
-            "Assertions": [
+    "Rules":{
+        "SubnetsInVPC":{
+            "Assertions":[
                 {
-                    "Assert": {
-                        "Fn::EachMemberIn": [
+                    "Assert":{
+                        "Fn::EachMemberIn":[
                             {
-                                "Fn::ValueOfAll": [
+                                "Fn::ValueOfAll":[
                                     "AWS::EC2::Subnet::Id",
                                     "VpcId"
                                 ]
                             },
                             {
-                                "Fn::RefAll": "AWS::EC2::VPC::Id"
+                                "Fn::RefAll":"AWS::EC2::VPC::Id"
                             }
                         ]
                     },
-                    "AssertDescription": "All subnets must in the VPC"
+                    "AssertDescription":"All subnets must in the VPC"
+                }
+            ]
+        },
+        "matchDBPasswords":{
+            "Assertions":[
+                {
+                    "Assert":{
+                        "Fn::Equals":[
+                            {
+                                "Ref":"DBPassword"
+                            },
+                            {
+                                "Ref":"ConfirmDBPassword"
+                            }
+                        ]
+                    },
+                    "AssertDescription":"Passwords do not match"
+                }
+            ]
+        },
+        "matchAdministratorPasswords":{
+            "Assertions":[
+                {
+                    "Assert":{
+                        "Fn::Equals":[
+                            {
+                                "Ref":"InformaticaAdminPassword"
+                            },
+                            {
+                                "Ref":"ConfirmInformaticaAdminPassword"
+                            }
+                        ]
+                    },
+                    "AssertDescription":"Passwords do not match"
                 }
             ]
         }
     },
-    "Conditions": {
-        "SingleNodeCnd": {
-            "Fn::Equals": [
+    "Conditions":{
+        "SingleNodeCnd":{
+            "Fn::Equals":[
                 {
-                    "Ref": "ICSClusterSize"
+                    "Ref":"ICSClusterSize"
                 },
                 "Small"
             ]
         },
-        "CreateMediumClusterCnd": {
-            "Fn::Equals": [
+        "CreateMediumClusterCnd":{
+            "Fn::Equals":[
                 {
-                    "Ref": "ICSClusterSize"
+                    "Ref":"ICSClusterSize"
                 },
                 "Medium"
             ]
         },
-        "CreateLargeClusterCnd": {
-            "Fn::Equals": [
+        "CreateLargeClusterCnd":{
+            "Fn::Equals":[
                 {
-                    "Ref": "ICSClusterSize"
+                    "Ref":"ICSClusterSize"
                 },
                 "Large"
             ]
         },
-        "MultipleNodeCnd": {
-            "Fn::Or": [
+        "MultipleNodeCnd":{
+            "Fn::Or":[
                 {
-                    "Condition": "CreateMediumClusterCnd"
+                    "Condition":"CreateMediumClusterCnd"
                 },
                 {
-                    "Condition": "CreateLargeClusterCnd"
+                    "Condition":"CreateLargeClusterCnd"
                 }
             ]
         },
-        "ImportSampleCnd": {
-            "Fn::Equals": [
+        "ImportSampleCnd":{
+            "Fn::Equals":[
                 {
-                    "Ref": "ImportSampleData"
+                    "Ref":"ImportSampleData"
                 },
                 "Yes"
             ]
         },
-        "SupportMultiAZCnd": {
-            "Fn::Equals": [
+        "SupportMultiAZCnd":{
+            "Fn::Equals":[
                 {
-                    "Fn::FindInMap": [
+                    "Fn::FindInMap":[
                         "MultiAZRegionMapping",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "Supporting"
                     ]
                 },
                 "YES"
             ]
+        },
+        "DoNotSupportDbM4Class":{
+            "Fn::Equals":[
+                {
+                    "Ref":"AWS::Region"
+                },
+                "eu-west-3"
+            ]
         }
     },
-    "Metadata": {
-        "AWS::CloudFormation::Interface": {
-            "ParameterGroups": [
+    "Metadata":{
+        "AWS::CloudFormation::Interface":{
+            "ParameterGroups":[
                 {
-                    "Label": {
-                        "default": "Network Configuration"
+                    "Label":{
+                        "default":"Network Configuration"
                     },
-                    "Parameters": [
+                    "Parameters":[
                         "VPCID",
                         "InformaticaServerSubnetID",
                         "DBSubnetIDs",
@@ -194,627 +268,648 @@
                     ]
                 },
                 {
-                    "Label": {
-                        "default": "Amazon EC2 Configuration"
+                    "Label":{
+                        "default":"Amazon EC2 Configuration"
                     },
-                    "Parameters": [
+                    "Parameters":[
                         "KeyName",
                         "InformaticaServerInstanceType",
                         "ICSClusterSize"
                     ]
                 },
                 {
-                    "Label": {
-                        "default": "Amazon RDS Configuration"
+                    "Label":{
+                        "default":"Amazon RDS Configuration"
                     },
-                    "Parameters": [
+                    "Parameters":[
                         "DBUser",
-                        "DBPassword"
+                        "DBPassword",
+                        "ConfirmDBPassword"
                     ]
                 },
                 {
-                    "Label": {
-                        "default": "Informatica Enterprise Information Catalog Configuration"
+                    "Label":{
+                        "default":"Informatica Enterprise Information Catalog Configuration"
                     },
-                    "Parameters": [
+                    "Parameters":[
                         "InformaticaAdminUsername",
                         "InformaticaAdminPassword",
+                        "ConfirmInformaticaAdminPassword",
                         "InformaticaEICKeyS3Bucket",
                         "InformaticaEICKeyName",
                         "ImportSampleData"
                     ]
                 },
                 {
-                    "Label": {
-                        "default": "AWS Quick Start Configuration"
+                    "Label":{
+                        "default":"AWS Quick Start Configuration"
                     },
-                    "Parameters": [
+                    "Parameters":[
                         "QSS3BucketName",
                         "QSS3KeyPrefix"
                     ]
                 }
             ],
-            "ParameterLabels": {
-                "VPCID": {
-                    "default": "VPC"
+            "ParameterLabels":{
+                "VPCID":{
+                    "default":"VPC"
                 },
-                "InformaticaServerInstanceType": {
-                    "default": "Informatica Domain Instance Type"
+                "InformaticaServerInstanceType":{
+                    "default":"Informatica Domain Instance Type"
                 },
-                "InformaticaAdminUsername": {
-                    "default": "Informatica Administrator Username"
+                "InformaticaAdminUsername":{
+                    "default":"Informatica Administrator Username"
                 },
-                "InformaticaAdminPassword": {
-                    "default": "Informatica Administrator Password"
+                "InformaticaAdminPassword":{
+                    "default":"Informatica Administrator Password"
                 },
-                "InformaticaEICKeyS3Bucket": {
-                    "default": "Enterprise Information Catalog License Key Location"
+                "ConfirmInformaticaAdminPassword":{
+                    "default":"Confirm Password"
                 },
-                "InformaticaEICKeyName": {
-                    "default": "Enterprise Information Catalog License Key Name"
+                "InformaticaEICKeyS3Bucket":{
+                    "default":"Enterprise Information Catalog License Key Location"
                 },
-                "InformaticaServerSubnetID": {
-                    "default": "Informatica Domain Subnet"
+                "InformaticaEICKeyName":{
+                    "default":"Enterprise Information Catalog License Key Name"
                 },
-                "DBUser": {
-                    "default": "Informatica Database Instance Username"
+                "InformaticaServerSubnetID":{
+                    "default":"Informatica Domain Subnet"
                 },
-                "DBPassword": {
-                    "default": "Informatica Database Instance Password"
+                "DBUser":{
+                    "default":"Informatica Database Instance Username"
                 },
-                "DBSubnetIDs": {
-                    "default": "Informatica Database Subnets"
+                "DBPassword":{
+                    "default":"Informatica Database Instance Password"
                 },
-                "ICSClusterSize": {
-                    "default": "Informatica Embedded Cluster Size"
+                "ConfirmDBPassword":{
+                    "default":"Confirm Password"
                 },
-                "ImportSampleData": {
-                    "default": "Import Sample Content"
+                "DBSubnetIDs":{
+                    "default":"Informatica Database Subnets"
                 },
-                "QSS3BucketName": {
-                    "default": "Quick Start S3 Bucket Name"
+                "ICSClusterSize":{
+                    "default":"Informatica Embedded Cluster Size"
                 },
-                "QSS3KeyPrefix": {
-                    "default": "Quick Start S3 Key Prefix"
+                "ImportSampleData":{
+                    "default":"Import Sample Content"
                 },
-                "IPAddressRange": {
-                    "default": "IP Address Range"
+                "QSS3BucketName":{
+                    "default":"Quick Start S3 Bucket Name"
                 },
-                "KeyName": {
-                    "default": "Key Pair Name"
+                "QSS3KeyPrefix":{
+                    "default":"Quick Start S3 Key Prefix"
+                },
+                "IPAddressRange":{
+                    "default":"IP Address Range"
+                },
+                "KeyName":{
+                    "default":"Key Pair Name"
                 }
             }
         }
     },
-    "Mappings": {
-        "AWSAMIRegionMap": {
-            "AMI": {
-                "INFAEICADMINHVM": "Administrator-Server Image EIC on AWS",
-                "INFAEICCLUSTERHVM": "Informatica Hadoop-Cluster Image for ICS"
+    "Mappings":{
+        "AWSAMIRegionMap":{
+            "AMI":{
+                "INFAEICADMINHVM":"Administrator-Server Image EIC on AWS",
+                "INFAEICCLUSTERHVM":"Informatica Hadoop-Cluster Image for ICS"
             },
-            "ap-northeast-1": {
-                "INFAEICADMINHVM": "ami-806838e7",
-                "INFAEICCLUSTERHVM": "ami-4d64262a"
+            "ap-northeast-1":{
+                "INFAEICADMINHVM":"ami-14374172",
+                "INFAEICCLUSTERHVM":"ami-6959320f"
             },
-            "ap-northeast-2": {
-                "INFAEICADMINHVM": "ami-46805328",
-                "INFAEICCLUSTERHVM": "ami-1e875770"
+            "ap-northeast-2":{
+                "INFAEICADMINHVM":"ami-daa200b4",
+                "INFAEICCLUSTERHVM":"ami-5d04a733"
             },
-            "ap-south-1": {
-                "INFAEICADMINHVM": "ami-3dbbcb52",
-                "INFAEICCLUSTERHVM": "ami-a5afdeca"
+            "ap-south-1":{
+                "INFAEICADMINHVM":"ami-48bfec27",
+                "INFAEICCLUSTERHVM":"ami-e1d7878e"
             },
-            "ap-southeast-1": {
-                "INFAEICADMINHVM": "ami-ce8536ad",
-                "INFAEICCLUSTERHVM": "ami-f5a21596"
+            "ap-southeast-1":{
+                "INFAEICADMINHVM":"ami-19672665",
+                "INFAEICCLUSTERHVM":"ami-e581c599"
             },
-            "ap-southeast-2": {
-                "INFAEICADMINHVM": "ami-598b893a",
-                "INFAEICCLUSTERHVM": "ami-ff2b2a9c"
+            "ap-southeast-2":{
+                "INFAEICADMINHVM":"ami-ac38c3ce",
+                "INFAEICCLUSTERHVM":"ami-ccf901ae"
             },
-            "ca-central-1": {
-                "INFAEICADMINHVM": "ami-7f53ee1b",
-                "INFAEICCLUSTERHVM": "ami-eda91489"
+            "ca-central-1":{
+                "INFAEICADMINHVM":"ami-fa991d9e",
+                "INFAEICCLUSTERHVM":"ami-23ec6847"
             },
-            "eu-central-1": {
-                "INFAEICADMINHVM": "ami-af71a5c0",
-                "INFAEICCLUSTERHVM": "ami-c867afa7"
+            "eu-central-1":{
+                "INFAEICADMINHVM":"ami-af5430c0",
+                "INFAEICCLUSTERHVM":"ami-08b42e67"
             },
-            "eu-west-1": {
-                "INFAEICADMINHVM": "ami-957d48f3",
-                "INFAEICCLUSTERHVM": "ami-e8381f8e"
+            "eu-west-1":{
+                "INFAEICADMINHVM":"ami-97660eee",
+                "INFAEICCLUSTERHVM":"ami-409df039"
             },
-            "eu-west-2": {
-                "INFAEICADMINHVM": "ami-14918470",
-                "INFAEICCLUSTERHVM": "ami-951500f1"
+            "eu-west-2":{
+                "INFAEICADMINHVM":"ami-f6bf5a91",
+                "INFAEICCLUSTERHVM":"ami-75fce611"
             },
-            "sa-east-1": {
-                "INFAEICADMINHVM": "ami-144a2b78",
-                "INFAEICCLUSTERHVM": "ami-6712750b"
+            "eu-west-3":{
+                "INFAEICADMINHVM":"ami-73af190e",
+                "INFAEICCLUSTERHVM":"ami-39b10744"
             },
-            "us-east-1": {
-                "INFAEICADMINHVM": "ami-6604a470",
-                "INFAEICCLUSTERHVM": "ami-5e925048"
+            "sa-east-1":{
+                "INFAEICADMINHVM":"ami-7227691e",
+                "INFAEICCLUSTERHVM":"ami-2d581741"
             },
-            "us-east-2": {
-                "INFAEICADMINHVM": "ami-ce7753ab",
-                "INFAEICCLUSTERHVM": "ami-24f5d041"
+            "us-east-1":{
+                "INFAEICADMINHVM":"ami-bce7eec6",
+                "INFAEICCLUSTERHVM":"ami-54a2a52e"
             },
-            "us-west-1": {
-                "INFAEICADMINHVM": "ami-5782db37",
-                "INFAEICCLUSTERHVM": "ami-10b4e870"
+            "us-east-2":{
+                "INFAEICADMINHVM":"ami-5e82b73b",
+                "INFAEICCLUSTERHVM":"ami-57f9cc32"
             },
-            "us-west-2": {
-                "INFAEICADMINHVM": "ami-3aa7285a",
-                "INFAEICCLUSTERHVM": "ami-68a82c08"
+            "us-west-1":{
+                "INFAEICADMINHVM":"ami-194c4279",
+                "INFAEICCLUSTERHVM":"ami-ed444b8d"
+            },
+            "us-west-2":{
+                "INFAEICADMINHVM":"ami-1b38bc63",
+                "INFAEICCLUSTERHVM":"ami-ac52e9d4"
             }
         },
-        "ClusterSizeMapping": {
-            "Small": {
-                "InstanceType": "c4.8xlarge",
-                "NumberOfInstances": "1"
+        "ClusterSizeMapping":{
+            "Small":{
+                "InstanceType":"c4.8xlarge",
+                "NumberOfInstances":"1"
             },
-            "Medium": {
-                "InstanceType": "c4.8xlarge",
-                "NumberOfInstances": "3"
+            "Medium":{
+                "InstanceType":"c4.8xlarge",
+                "NumberOfInstances":"3"
             },
-            "Large": {
-                "InstanceType": "c4.8xlarge",
-                "NumberOfInstances": "6"
+            "Large":{
+                "InstanceType":"c4.8xlarge",
+                "NumberOfInstances":"6"
             }
         },
-        "MultiAZRegionMapping": {
-            "us-east-1": {
-                "Supporting": "YES"
+        "MultiAZRegionMapping":{
+            "us-east-1":{
+                "Supporting":"YES"
             },
-            "us-east-2": {
-                "Supporting": "YES"
+            "us-east-2":{
+                "Supporting":"YES"
             },
-            "us-west-1": {
-                "Supporting": "NO"
+            "us-west-1":{
+                "Supporting":"NO"
             },
-            "us-west-2": {
-                "Supporting": "YES"
+            "us-west-2":{
+                "Supporting":"YES"
             },
-            "ap-south-1": {
-                "Supporting": "YES"
+            "ap-south-1":{
+                "Supporting":"YES"
             },
-            "ap-northeast-1": {
-                "Supporting": "YES"
+            "ap-northeast-1":{
+                "Supporting":"YES"
             },
-            "ap-northeast-2": {
-                "Supporting": "YES"
+            "ap-northeast-2":{
+                "Supporting":"YES"
             },
-            "ap-southeast-1": {
-                "Supporting": "NO"
+            "ap-southeast-1":{
+                "Supporting":"NO"
             },
-            "ap-southeast-2": {
-                "Supporting": "YES"
+            "ap-southeast-2":{
+                "Supporting":"YES"
             },
-            "sa-east-1": {
-                "Supporting": "YES"
+            "sa-east-1":{
+                "Supporting":"YES"
             },
-            "eu-west-1": {
-                "Supporting": "YES"
+            "eu-west-1":{
+                "Supporting":"YES"
             },
-            "eu-west-2": {
-                "Supporting": "YES"
+            "eu-west-2":{
+                "Supporting":"YES"
             },
-            "eu-central-1": {
-                "Supporting": "NO"
+            "eu-west-3":{
+                "Supporting":"YES"
             },
-            "ca-central-1": {
-                "Supporting": "YES"
+            "eu-central-1":{
+                "Supporting":"NO"
+            },
+            "ca-central-1":{
+                "Supporting":"YES"
             }
         },
-        "AWSInfoRegionMap": {
-            "ap-northeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+        "AWSInfoRegionMap":{
+            "ap-northeast-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "ap-northeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "ap-northeast-2":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "ap-south-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "ap-south-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "ap-southeast-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "ap-southeast-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "ap-southeast-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "ap-southeast-2":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "ca-central-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "ca-central-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "eu-central-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "eu-central-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "eu-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "eu-west-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "eu-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "eu-west-2":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "sa-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "eu-west-3":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "us-east-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "sa-east-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "us-east-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "us-east-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "us-west-1": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "us-east-2":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             },
-            "us-west-2": {
-                "Partition": "aws",
-                "QuickStartS3URL": "https://s3.amazonaws.com"
+            "us-west-1":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
+            },
+            "us-west-2":{
+                "Partition":"aws",
+                "QuickStartS3URL":"https://s3.amazonaws.com"
             }
         }
     },
-    "Resources": {
-        "ElasticIPNode1": {
-            "Type": "AWS::EC2::EIP",
-            "Properties": {
-                "Domain": "vpc"
+    "Resources":{
+        "ElasticIPNode1":{
+            "Type":"AWS::EC2::EIP",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "ElasticIPNode2": {
-            "Type": "AWS::EC2::EIP",
-            "Condition": "MultipleNodeCnd",
-            "Properties": {
-                "Domain": "vpc"
+        "ElasticIPNode2":{
+            "Type":"AWS::EC2::EIP",
+            "Condition":"MultipleNodeCnd",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "ElasticIPNode3": {
-            "Type": "AWS::EC2::EIP",
-            "Condition": "MultipleNodeCnd",
-            "Properties": {
-                "Domain": "vpc"
+        "ElasticIPNode3":{
+            "Type":"AWS::EC2::EIP",
+            "Condition":"MultipleNodeCnd",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "ElasticIPNode4": {
-            "Type": "AWS::EC2::EIP",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "Domain": "vpc"
+        "ElasticIPNode4":{
+            "Type":"AWS::EC2::EIP",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "ElasticIPNode5": {
-            "Type": "AWS::EC2::EIP",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "Domain": "vpc"
+        "ElasticIPNode5":{
+            "Type":"AWS::EC2::EIP",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "ElasticIPNode6": {
-            "Type": "AWS::EC2::EIP",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "Domain": "vpc"
+        "ElasticIPNode6":{
+            "Type":"AWS::EC2::EIP",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "Node1NetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Properties": {
-                "Description": "Interface for Node 1 traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "Node1NetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Properties":{
+                "Description":"Interface for Node 1 traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "AdditionalICSSecurityGroup"
+                        "Ref":"AdditionalICSSecurityGroup"
                     },
                     {
-                        "Ref": "InternalAdditionalICSSecurityGroup"
+                        "Ref":"InternalAdditionalICSSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Node 1 Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Node 1 Network Interface"
                     }
                 ]
             }
         },
-        "Node2NetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Condition": "MultipleNodeCnd",
-            "Properties": {
-                "Description": "Interface for Node 2 traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "Node2NetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Condition":"MultipleNodeCnd",
+            "Properties":{
+                "Description":"Interface for Node 2 traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "AdditionalICSSecurityGroup"
+                        "Ref":"AdditionalICSSecurityGroup"
                     },
                     {
-                        "Ref": "InternalAdditionalICSSecurityGroup"
+                        "Ref":"InternalAdditionalICSSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Node 2 Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Node 2 Network Interface"
                     }
                 ]
             }
         },
-        "Node3NetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Condition": "MultipleNodeCnd",
-            "Properties": {
-                "Description": "Interface for Node 3 traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "Node3NetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Condition":"MultipleNodeCnd",
+            "Properties":{
+                "Description":"Interface for Node 3 traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "AdditionalICSSecurityGroup"
+                        "Ref":"AdditionalICSSecurityGroup"
                     },
                     {
-                        "Ref": "InternalAdditionalICSSecurityGroup"
+                        "Ref":"InternalAdditionalICSSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Node 3 Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Node 3 Network Interface"
                     }
                 ]
             }
         },
-        "Node4NetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "Description": "Interface for Node 4 traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "Node4NetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "Description":"Interface for Node 4 traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "AdditionalICSSecurityGroup"
+                        "Ref":"AdditionalICSSecurityGroup"
                     },
                     {
-                        "Ref": "InternalAdditionalICSSecurityGroup"
+                        "Ref":"InternalAdditionalICSSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Node 4 Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Node 4 Network Interface"
                     }
                 ]
             }
         },
-        "Node5NetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "Description": "Interface for Node 5 traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "Node5NetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "Description":"Interface for Node 5 traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "AdditionalICSSecurityGroup"
+                        "Ref":"AdditionalICSSecurityGroup"
                     },
                     {
-                        "Ref": "InternalAdditionalICSSecurityGroup"
+                        "Ref":"InternalAdditionalICSSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Node 5 Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Node 5 Network Interface"
                     }
                 ]
             }
         },
-        "Node6NetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "Description": "Interface for Node 6 traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "Node6NetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "Description":"Interface for Node 6 traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "AdditionalICSSecurityGroup"
+                        "Ref":"AdditionalICSSecurityGroup"
                     },
                     {
-                        "Ref": "InternalAdditionalICSSecurityGroup"
+                        "Ref":"InternalAdditionalICSSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Node 6 Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Node 6 Network Interface"
                     }
                 ]
             }
         },
-        "Node1IPAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "Node1IPAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "ElasticIPNode1",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "Node1NetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"Node1NetInterface"
                 }
             }
         },
-        "Node2IPAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Condition": "MultipleNodeCnd",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "Node2IPAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Condition":"MultipleNodeCnd",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "ElasticIPNode2",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "Node2NetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"Node2NetInterface"
                 }
             }
         },
-        "Node3IPAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Condition": "MultipleNodeCnd",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "Node3IPAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Condition":"MultipleNodeCnd",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "ElasticIPNode3",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "Node3NetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"Node3NetInterface"
                 }
             }
         },
-        "Node4IPAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "Node4IPAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "ElasticIPNode4",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "Node4NetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"Node4NetInterface"
                 }
             }
         },
-        "Node5IPAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "Node5IPAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "ElasticIPNode5",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "Node5NetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"Node5NetInterface"
                 }
             }
         },
-        "Node6IPAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Condition": "CreateLargeClusterCnd",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "Node6IPAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Condition":"CreateLargeClusterCnd",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "ElasticIPNode6",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "Node6NetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"Node6NetInterface"
                 }
             }
         },
-        "WaitForClusterInstancesHandle": {
-            "Type": "AWS::CloudFormation::WaitConditionHandle",
-            "Properties": {}
+        "WaitForClusterInstancesHandle":{
+            "Type":"AWS::CloudFormation::WaitConditionHandle",
+            "Properties":{
+
+            }
         },
-        "WaitForClusterInstancesCondition": {
-            "Type": "AWS::CloudFormation::WaitCondition",
-            "Properties": {
-                "Count": {
-                    "Fn::FindInMap": [
+        "WaitForClusterInstancesCondition":{
+            "Type":"AWS::CloudFormation::WaitCondition",
+            "Properties":{
+                "Count":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "NumberOfInstances"
                     ]
                 },
-                "Handle": {
-                    "Ref": "WaitForClusterInstancesHandle"
+                "Handle":{
+                    "Ref":"WaitForClusterInstancesHandle"
                 },
-                "Timeout": "3600"
+                "Timeout":"3600"
             }
         },
-        "HadoopGateway": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "SingleNodeCnd",
-            "DependsOn": "Node1IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "HadoopGateway":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"SingleNodeCnd",
+            "DependsOn":"Node1IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node1NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node1NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "HadoopGateway-HadoopNode-1"
+                        "Key":"Name",
+                        "Value":"HadoopGateway-HadoopNode-1"
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -822,7 +917,7 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
@@ -830,8 +925,6 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -844,7 +937,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -853,53 +946,53 @@
                 }
             }
         },
-        "MultiNodeHadoopGateway": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "MultipleNodeCnd",
-            "DependsOn": "Node1IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "MultiNodeHadoopGateway":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"MultipleNodeCnd",
+            "DependsOn":"Node1IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node1NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node1NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "HadoopGateway-HadoopNode-1"
+                        "Key":"Name",
+                        "Value":"HadoopGateway-HadoopNode-1"
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -907,7 +1000,7 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
@@ -915,8 +1008,6 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -929,7 +1020,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -938,49 +1029,49 @@
                 }
             }
         },
-        "MultiNodeHadoopNode2": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "MultipleNodeCnd",
-            "DependsOn": "Node2IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "MultiNodeHadoopNode2":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"MultipleNodeCnd",
+            "DependsOn":"Node2IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node2NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node2NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
+                        "Key":"Name",
+                        "Value":{
+                            "Fn::Join":[
                                 "-",
                                 [
                                     "HadoopNode",
@@ -990,9 +1081,9 @@
                         }
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -1000,16 +1091,13 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
                                 "}\n",
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
-                                "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1022,7 +1110,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -1031,49 +1119,49 @@
                 }
             }
         },
-        "MultiNodeHadoopNode3": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "MultipleNodeCnd",
-            "DependsOn": "Node3IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "MultiNodeHadoopNode3":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"MultipleNodeCnd",
+            "DependsOn":"Node3IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node3NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node3NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
+                        "Key":"Name",
+                        "Value":{
+                            "Fn::Join":[
                                 "-",
                                 [
                                     "HadoopNode",
@@ -1083,9 +1171,9 @@
                         }
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -1093,7 +1181,7 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
@@ -1101,8 +1189,6 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1115,7 +1201,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -1124,49 +1210,49 @@
                 }
             }
         },
-        "MultiNodeHadoopNode4": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "CreateLargeClusterCnd",
-            "DependsOn": "Node4IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "MultiNodeHadoopNode4":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"CreateLargeClusterCnd",
+            "DependsOn":"Node4IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node4NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node4NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
+                        "Key":"Name",
+                        "Value":{
+                            "Fn::Join":[
                                 "-",
                                 [
                                     "HadoopNode",
@@ -1176,9 +1262,9 @@
                         }
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -1186,7 +1272,7 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
@@ -1194,8 +1280,6 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1208,7 +1292,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -1217,49 +1301,49 @@
                 }
             }
         },
-        "MultiNodeHadoopNode5": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "CreateLargeClusterCnd",
-            "DependsOn": "Node5IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "MultiNodeHadoopNode5":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"CreateLargeClusterCnd",
+            "DependsOn":"Node5IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node5NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node5NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
+                        "Key":"Name",
+                        "Value":{
+                            "Fn::Join":[
                                 "-",
                                 [
                                     "HadoopNode",
@@ -1269,9 +1353,9 @@
                         }
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -1279,7 +1363,7 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
@@ -1287,8 +1371,6 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1301,7 +1383,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -1310,49 +1392,49 @@
                 }
             }
         },
-        "MultiNodeHadoopNode6": {
-            "Type": "AWS::EC2::Instance",
-            "Condition": "CreateLargeClusterCnd",
-            "DependsOn": "Node6IPAssoc",
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+        "MultiNodeHadoopNode6":{
+            "Type":"AWS::EC2::Instance",
+            "Condition":"CreateLargeClusterCnd",
+            "DependsOn":"Node6IPAssoc",
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICCLUSTERHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Fn::FindInMap": [
+                "InstanceType":{
+                    "Fn::FindInMap":[
                         "ClusterSizeMapping",
                         {
-                            "Ref": "ICSClusterSize"
+                            "Ref":"ICSClusterSize"
                         },
                         "InstanceType"
                     ]
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "Node6NetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"Node6NetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
+                        "Key":"Name",
+                        "Value":{
+                            "Fn::Join":[
                                 "-",
                                 [
                                     "HadoopNode",
@@ -1362,9 +1444,9 @@
                         }
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
@@ -1372,7 +1454,7 @@
                                 "{\n",
                                 " /opt/aws/bin/cfn-signal -e 1 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n",
                                 " exit 1\n",
@@ -1380,8 +1462,6 @@
                                 "\n",
                                 " sudo yum update -y aws-cfn-bootstrap || error_exit\n",
                                 "# Install the files and packages from the metadata\n",
-                                " sudo yum install -y python-devel-2.7.5-34.el7.x86_64 || error_exit\n",
-                                " echo 'exclude=python*' >> /etc/yum.conf \n",
                                 " sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh || error_exit\n",
                                 "\n",
                                 " response=$(sudo /bin/systemctl status sshd.service || error_exit)\n",
@@ -1394,7 +1474,7 @@
                                 "\n",
                                 " /opt/aws/bin/cfn-signal -e 0 '",
                                 {
-                                    "Ref": "WaitForClusterInstancesHandle"
+                                    "Ref":"WaitForClusterInstancesHandle"
                                 },
                                 "'\n"
                             ]
@@ -1403,316 +1483,345 @@
                 }
             }
         },
-        "AdditionalICSSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Allowing all ports for all IPs incoming and outgoing",
-                "VpcId": {
-                    "Ref": "VPCID"
+        "AdditionalICSSecurityGroup":{
+            "Type":"AWS::EC2::SecurityGroup",
+            "Properties":{
+                "GroupDescription":"Allowing all ports for all IPs incoming and outgoing",
+                "VpcId":{
+                    "Ref":"VPCID"
                 },
-                "SecurityGroupIngress": [
+                "SecurityGroupIngress":[
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8080",
-                        "ToPort": "8080",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8080",
+                        "ToPort":"8080",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8088",
-                        "ToPort": "8088",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8088",
+                        "ToPort":"8088",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8042",
-                        "ToPort": "8042",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8042",
+                        "ToPort":"8042",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "50070",
-                        "ToPort": "50070",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"50070",
+                        "ToPort":"50070",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "19888",
-                        "ToPort": "19888",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"19888",
+                        "ToPort":"19888",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "0",
-                        "ToPort": "65535",
-                        "SourceSecurityGroupId": {
-                            "Fn::GetAtt": [
+                        "IpProtocol":"tcp",
+                        "FromPort":"0",
+                        "ToPort":"65535",
+                        "SourceSecurityGroupId":{
+                            "Fn::GetAtt":[
                                 "InternalAdditionalICSSecurityGroup",
                                 "GroupId"
                             ]
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "0",
-                        "ToPort": "65535",
-                        "SourceSecurityGroupId": {
-                            "Ref": "InfaDomainSecurityGroup"
+                        "IpProtocol":"tcp",
+                        "FromPort":"0",
+                        "ToPort":"65535",
+                        "SourceSecurityGroupId":{
+                            "Ref":"InfaDomainSecurityGroup"
                         }
                     }
                 ]
             }
         },
-        "InternalAdditionalICSSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "To enable all ports between hadoop machines only.",
-                "VpcId": {
-                    "Ref": "VPCID"
+        "InternalAdditionalICSSecurityGroup":{
+            "Type":"AWS::EC2::SecurityGroup",
+            "Properties":{
+                "GroupDescription":"To enable all ports between hadoop machines only.",
+                "VpcId":{
+                    "Ref":"VPCID"
                 }
             }
         },
-        "InfaDBSubnetGroup": {
-            "Type": "AWS::RDS::DBSubnetGroup",
-            "Properties": {
-                "DBSubnetGroupDescription": "Subnets available for the RDS DB Instance",
-                "SubnetIds": {
-                    "Ref": "DBSubnetIDs"
+        "InfaDBSubnetGroup":{
+            "Type":"AWS::RDS::DBSubnetGroup",
+            "Properties":{
+                "DBSubnetGroupDescription":"Subnets available for the RDS DB Instance",
+                "SubnetIds":{
+                    "Ref":"DBSubnetIDs"
                 }
             }
         },
-        "InfaDB": {
-            "Type": "AWS::RDS::DBInstance",
-            "Properties": {
-                "AllocatedStorage": "200",
-                "MultiAZ": {
-                    "Fn::If": [
+        "InfaDB":{
+            "Type":"AWS::RDS::DBInstance",
+            "DeletionPolicy":"Delete",
+            "Properties":{
+                "AllocatedStorage":"200",
+                "MultiAZ":{
+                    "Fn::If":[
                         "SupportMultiAZCnd",
                         "true",
                         {
-                            "Ref": "AWS::NoValue"
+                            "Ref":"AWS::NoValue"
                         }
                     ]
                 },
-                "StorageType": "gp2",
-                "LicenseModel": "license-included",
-                "DBInstanceClass": "db.m4.2xlarge",
-                "DBSubnetGroupName": {
-                    "Ref": "InfaDBSubnetGroup"
+                "StorageType":"gp2",
+                "LicenseModel":"license-included",
+                "DBInstanceClass":{
+                    "Fn::If":[
+                        "DoNotSupportDbM4Class",
+                        "db.r4.xlarge",
+                        "db.m4.2xlarge"
+                    ]
                 },
-                "VPCSecurityGroups": [
+                "DBSubnetGroupName":{
+                    "Ref":"InfaDBSubnetGroup"
+                },
+                "VPCSecurityGroups":[
                     {
-                        "Ref": "InfaDBSecurityGroup"
+                        "Ref":"InfaDBSecurityGroup"
                     }
                 ],
-                "Engine": "sqlserver-se",
-                "MasterUsername": {
-                    "Ref": "DBUser"
+                "Engine":"sqlserver-se",
+                "MasterUsername":{
+                    "Ref":"DBUser"
                 },
-                "MasterUserPassword": {
-                    "Ref": "DBPassword"
+                "MasterUserPassword":{
+                    "Ref":"DBPassword"
                 }
             }
         },
-        "InfaDBSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Informatica domain access to RDS DB",
-                "VpcId": {
-                    "Ref": "VPCID"
+        "InfaDBSecurityGroup":{
+            "Type":"AWS::EC2::SecurityGroup",
+            "Properties":{
+                "GroupDescription":"Informatica domain access to RDS DB",
+                "VpcId":{
+                    "Ref":"VPCID"
                 },
-                "SecurityGroupIngress": [
+                "SecurityGroupIngress":[
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "1433",
-                        "ToPort": "1433",
-                        "SourceSecurityGroupId": {
-                            "Ref": "InfaDomainSecurityGroup"
+                        "IpProtocol":"tcp",
+                        "FromPort":"1433",
+                        "ToPort":"1433",
+                        "SourceSecurityGroupId":{
+                            "Ref":"InfaDomainSecurityGroup"
                         }
                     }
                 ]
             }
         },
-        "InfaDomainSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Enable Informatica Domain Server Access",
-                "VpcId": {
-                    "Ref": "VPCID"
+        "InfaDomainSecurityGroup":{
+            "Type":"AWS::EC2::SecurityGroup",
+            "Properties":{
+                "GroupDescription":"Enable Informatica Domain Server Access",
+                "VpcId":{
+                    "Ref":"VPCID"
                 },
-                "SecurityGroupIngress": [
+                "SecurityGroupIngress":[
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "6005",
-                        "ToPort": "6005",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"6005",
+                        "ToPort":"6005",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "6006",
-                        "ToPort": "6006",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"6006",
+                        "ToPort":"6006",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "6008",
-                        "ToPort": "6008",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"6008",
+                        "ToPort":"6008",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "6014",
-                        "ToPort": "6114",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"6014",
+                        "ToPort":"6114",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8095",
-                        "ToPort": "8095",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8095",
+                        "ToPort":"8095",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8785",
-                        "ToPort": "8785",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8785",
+                        "ToPort":"8785",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8085",
-                        "ToPort": "8085",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8085",
+                        "ToPort":"8085",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "9085",
-                        "ToPort": "9085",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"9085",
+                        "ToPort":"9085",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "8089",
-                        "ToPort": "8089",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"8089",
+                        "ToPort":"8089",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "443",
-                        "ToPort": "443",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"443",
+                        "ToPort":"443",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "22",
-                        "ToPort": "22",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"22",
+                        "ToPort":"22",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "tcp",
-                        "FromPort": "21000",
-                        "ToPort": "22000",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"tcp",
+                        "FromPort":"21000",
+                        "ToPort":"22000",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     },
                     {
-                        "IpProtocol": "udp",
-                        "FromPort": "1434",
-                        "ToPort": "1434",
-                        "CidrIp": {
-                            "Ref": "IPAddressRange"
+                        "IpProtocol":"udp",
+                        "FromPort":"1434",
+                        "ToPort":"1434",
+                        "CidrIp":{
+                            "Ref":"IPAddressRange"
                         }
                     }
                 ]
             }
         },
-        "InstanceRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Statement": [
+        "InstanceRole":{
+            "Type":"AWS::IAM::Role",
+            "Properties":{
+                "AssumeRolePolicyDocument":{
+                    "Statement":[
                         {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": [
+                            "Effect":"Allow",
+                            "Principal":{
+                                "Service":[
                                     "ec2.amazonaws.com"
                                 ]
                             },
-                            "Action": [
+                            "Action":[
                                 "sts:AssumeRole"
                             ]
                         }
                     ]
                 },
-                "Path": "/"
+                "Path":"/"
             }
         },
-        "RolePolicies": {
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "S3Download",
-                "PolicyDocument": {
-                    "Statement": [
+        "CloudWatchPolicies":{
+            "Type":"AWS::IAM::ManagedPolicy",
+            "Properties":{
+                "PolicyDocument":{
+                    "Version":"2012-10-17",
+                    "Statement":[
                         {
-                            "Action": [
+                            "Action":[
+                                "logs:*"
+                            ],
+                            "Effect":"Allow",
+                            "Resource":"*"
+                        }
+                    ]
+                },
+                "Roles":[
+                    {
+                        "Ref":"InstanceRole"
+                    }
+                ]
+            }
+        },
+        "RolePolicies":{
+            "Type":"AWS::IAM::Policy",
+            "Properties":{
+                "PolicyName":"S3Download",
+                "PolicyDocument":{
+                    "Statement":[
+                        {
+                            "Action":[
                                 "s3:Get*",
                                 "s3:List*"
                             ],
-                            "Effect": "Allow",
-                            "Resource": [
+                            "Effect":"Allow",
+                            "Resource":[
                                 {
-                                    "Fn::Join": [
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "arn:",
                                             {
-                                                "Fn::FindInMap": [
+                                                "Fn::FindInMap":[
                                                     "AWSInfoRegionMap",
                                                     {
-                                                        "Ref": "AWS::Region"
+                                                        "Ref":"AWS::Region"
                                                     },
                                                     "Partition"
                                                 ]
                                             },
                                             ":s3:::",
                                             {
-                                                "Ref": "InformaticaEICKeyS3Bucket"
+                                                "Ref":"InformaticaEICKeyS3Bucket"
                                             },
                                             "/",
                                             {
-                                                "Ref": "InformaticaEICKeyName"
+                                                "Ref":"InformaticaEICKeyName"
                                             }
                                         ]
                                     ]
@@ -1721,117 +1830,117 @@
                         }
                     ]
                 },
-                "Roles": [
+                "Roles":[
                     {
-                        "Ref": "InstanceRole"
+                        "Ref":"InstanceRole"
                     }
                 ]
             }
         },
-        "InstanceProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Properties": {
-                "Path": "/",
-                "Roles": [
+        "InstanceProfile":{
+            "Type":"AWS::IAM::InstanceProfile",
+            "Properties":{
+                "Path":"/",
+                "Roles":[
                     {
-                        "Ref": "InstanceRole"
+                        "Ref":"InstanceRole"
                     }
                 ]
             }
         },
-        "AdministrationServerEIP": {
-            "Type": "AWS::EC2::EIP",
-            "Properties": {
-                "Domain": "vpc"
+        "AdministrationServerEIP":{
+            "Type":"AWS::EC2::EIP",
+            "Properties":{
+                "Domain":"vpc"
             }
         },
-        "AdministrationServerNetInterface": {
-            "Type": "AWS::EC2::NetworkInterface",
-            "Properties": {
-                "Description": "Interface for Administrator Server traffic",
-                "SubnetId": {
-                    "Ref": "InformaticaServerSubnetID"
+        "AdministrationServerNetInterface":{
+            "Type":"AWS::EC2::NetworkInterface",
+            "Properties":{
+                "Description":"Interface for Administrator Server traffic",
+                "SubnetId":{
+                    "Ref":"InformaticaServerSubnetID"
                 },
-                "GroupSet": [
+                "GroupSet":[
                     {
-                        "Ref": "InfaDomainSecurityGroup"
+                        "Ref":"InfaDomainSecurityGroup"
                     }
                 ],
-                "SourceDestCheck": "true",
-                "Tags": [
+                "SourceDestCheck":"true",
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": "Informatica Domain Network Interface"
+                        "Key":"Name",
+                        "Value":"Informatica Domain Network Interface"
                     }
                 ]
             }
         },
-        "AdministrationServerAssoc": {
-            "Type": "AWS::EC2::EIPAssociation",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
+        "AdministrationServerAssoc":{
+            "Type":"AWS::EC2::EIPAssociation",
+            "Properties":{
+                "AllocationId":{
+                    "Fn::GetAtt":[
                         "AdministrationServerEIP",
                         "AllocationId"
                     ]
                 },
-                "NetworkInterfaceId": {
-                    "Ref": "AdministrationServerNetInterface"
+                "NetworkInterfaceId":{
+                    "Ref":"AdministrationServerNetInterface"
                 }
             }
         },
-        "AdministrationServer": {
-            "Type": "AWS::EC2::Instance",
-            "Metadata": {
-                "AWS::CloudFormation::Authentication": {
-                    "S3AccessCreds": {
-                        "type": "S3",
-                        "roleName": {
-                            "Ref": "InstanceRole"
+        "AdministrationServer":{
+            "Type":"AWS::EC2::Instance",
+            "Metadata":{
+                "AWS::CloudFormation::Authentication":{
+                    "S3AccessCreds":{
+                        "type":"S3",
+                        "roleName":{
+                            "Ref":"InstanceRole"
                         },
-                        "buckets": [
+                        "buckets":[
                             {
-                                "Ref": "InformaticaEICKeyS3Bucket"
+                                "Ref":"InformaticaEICKeyS3Bucket"
                             }
                         ]
                     }
                 },
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "InstallAndRun": [
+                "AWS::CloudFormation::Init":{
+                    "configSets":{
+                        "InstallAndRun":[
                             "Install",
                             "Configure"
                         ]
                     },
-                    "Install": {
-                        "files": {
-                            "/etc/cfn/cfn-hup.conf": {
-                                "content": {
-                                    "Fn::Join": [
+                    "Install":{
+                        "files":{
+                            "/etc/cfn/cfn-hup.conf":{
+                                "content":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "[main]\n",
                                             "stack=",
                                             {
-                                                "Ref": "AWS::StackName"
+                                                "Ref":"AWS::StackName"
                                             },
                                             "\n",
                                             "interval=1\n",
                                             "region=",
                                             {
-                                                "Ref": "AWS::Region"
+                                                "Ref":"AWS::Region"
                                             },
                                             "\n"
                                         ]
                                     ]
                                 },
-                                "mode": "000400",
-                                "owner": "ec2-user",
-                                "group": "ec2-user"
+                                "mode":"000400",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
                             },
-                            "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
-                                "content": {
-                                    "Fn::Join": [
+                            "/etc/cfn/hooks.d/cfn-auto-reloader.conf":{
+                                "content":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "[cfn-auto-reloader-hook]\n",
@@ -1839,25 +1948,25 @@
                                             "path=Resources.AdministrationServer.Metadata.AWS::CloudFormation::Init\n",
                                             "action=/opt/aws/bin/cfn-init -s ",
                                             {
-                                                "Ref": "AWS::StackId"
+                                                "Ref":"AWS::StackId"
                                             },
                                             " -r AdministrationServer ",
                                             " --region ",
                                             {
-                                                "Ref": "AWS::Region"
+                                                "Ref":"AWS::Region"
                                             },
                                             "\n",
                                             "runas=root\n"
                                         ]
                                     ]
                                 },
-                                "mode": "000400",
-                                "owner": "ec2-user",
-                                "group": "ec2-user"
+                                "mode":"000400",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
                             },
-                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh": {
-                                "content": {
-                                    "Fn::Join": [
+                            "/home/ec2-user/Mercury_Setup/replaceHostname.sh":{
+                                "content":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "#!/bin/bash\n",
@@ -1872,20 +1981,20 @@
                                             "sudo su -c \"sed -i '$ a preserve_hostname: true' /etc/cloud/cloud.cfg\" \n",
                                             "etcHostsConfigOfCluster=\"",
                                             {
-                                                "Fn::If": [
+                                                "Fn::If":[
                                                     "SingleNodeCnd",
                                                     {
-                                                        "Fn::Join": [
+                                                        "Fn::Join":[
                                                             " ",
                                                             [
                                                                 {
-                                                                    "Fn::GetAtt": [
+                                                                    "Fn::GetAtt":[
                                                                         "HadoopGateway",
                                                                         "PrivateIp"
                                                                     ]
                                                                 },
                                                                 {
-                                                                    "Fn::GetAtt": [
+                                                                    "Fn::GetAtt":[
                                                                         "HadoopGateway",
                                                                         "PublicDnsName"
                                                                     ]
@@ -1894,24 +2003,24 @@
                                                         ]
                                                     },
                                                     {
-                                                        "Fn::If": [
+                                                        "Fn::If":[
                                                             "CreateLargeClusterCnd",
                                                             {
-                                                                "Fn::Join": [
+                                                                "Fn::Join":[
                                                                     "\\\\\\n",
                                                                     [
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopGateway",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopGateway",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -1920,17 +2029,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode2",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode2",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -1939,17 +2048,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode3",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode3",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -1958,17 +2067,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode4",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode4",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -1977,17 +2086,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode5",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode5",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -1996,17 +2105,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode6",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode6",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -2018,21 +2127,21 @@
                                                                 ]
                                                             },
                                                             {
-                                                                "Fn::Join": [
+                                                                "Fn::Join":[
                                                                     "\\\\\\n",
                                                                     [
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopGateway",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopGateway",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -2041,17 +2150,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode2",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode2",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -2060,17 +2169,17 @@
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::Join": [
+                                                                            "Fn::Join":[
                                                                                 " ",
                                                                                 [
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode3",
                                                                                             "PrivateIp"
                                                                                         ]
                                                                                     },
                                                                                     {
-                                                                                        "Fn::GetAtt": [
+                                                                                        "Fn::GetAtt":[
                                                                                             "MultiNodeHadoopNode3",
                                                                                             "PublicDnsName"
                                                                                         ]
@@ -2088,15 +2197,15 @@
                                             "\"\n",
                                             "sudo su -c \"echo -e $etcHostsConfigOfCluster >> /etc/hosts\" \n",
                                             {
-                                                "Fn::If": [
+                                                "Fn::If":[
                                                     "SingleNodeCnd",
                                                     {
-                                                        "Fn::Join": [
+                                                        "Fn::Join":[
                                                             "",
                                                             [
                                                                 "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                 {
-                                                                    "Fn::GetAtt": [
+                                                                    "Fn::GetAtt":[
                                                                         "HadoopGateway",
                                                                         "PublicDnsName"
                                                                     ]
@@ -2106,15 +2215,15 @@
                                                         ]
                                                     },
                                                     {
-                                                        "Fn::If": [
+                                                        "Fn::If":[
                                                             "CreateLargeClusterCnd",
                                                             {
-                                                                "Fn::Join": [
+                                                                "Fn::Join":[
                                                                     "",
                                                                     [
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopGateway",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2122,7 +2231,7 @@
                                                                         " \"sudo su -c 'echo -e $etcHostsConfigOfCluster >> /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode2",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2130,7 +2239,7 @@
                                                                         " \"sudo su -c  'echo -e $etcHostsConfigOfCluster >> /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode3",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2138,7 +2247,7 @@
                                                                         " \"sudo su -c  'echo -e $etcHostsConfigOfCluster >>  /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode4",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2146,7 +2255,7 @@
                                                                         " \"sudo su -c  'echo -e $etcHostsConfigOfCluster >> /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode5",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2154,7 +2263,7 @@
                                                                         " \"sudo su -c  'echo -e $etcHostsConfigOfCluster >> /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode6",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2164,12 +2273,12 @@
                                                                 ]
                                                             },
                                                             {
-                                                                "Fn::Join": [
+                                                                "Fn::Join":[
                                                                     "",
                                                                     [
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopGateway",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2177,7 +2286,7 @@
                                                                         " \"sudo su -c 'echo -e $etcHostsConfigOfCluster >> /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode2",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2185,7 +2294,7 @@
                                                                         " \"sudo su -c  'echo -e $etcHostsConfigOfCluster >> /etc/hosts'\" \n",
                                                                         "sudo ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no ",
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode3",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2201,20 +2310,20 @@
                                         ]
                                     ]
                                 },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user"
+                                "mode":"000770",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
                             },
-                            "/home/ec2-user/Mercury_Setup/replaceValues.sh": {
-                                "content": {
-                                    "Fn::Join": [
+                            "/home/ec2-user/Mercury_Setup/replaceValues.sh":{
+                                "content":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "#!/bin/bash\n",
                                             "THISHOST=$(hostname -f)\n",
                                             "sed -i -e ",
                                             {
-                                                "Fn::Join": [
+                                                "Fn::Join":[
                                                     "",
                                                     [
                                                         "\"s/DomainHostValue/$THISHOST/g\"",
@@ -2227,28 +2336,28 @@
                                             "sed -i -e 's/licensename/License/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/adminusername/",
                                             {
-                                                "Ref": "InformaticaAdminUsername"
+                                                "Ref":"InformaticaAdminUsername"
                                             },
                                             "/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/adminpassword/",
                                             {
-                                                "Ref": "InformaticaAdminPassword"
+                                                "Ref":"InformaticaAdminPassword"
                                             },
                                             "/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/dbtypevalue/MSSQLServer/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/dbloginvalue/",
                                             {
-                                                "Ref": "DBUser"
+                                                "Ref":"DBUser"
                                             },
                                             "/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/dbpasswordvalue/",
                                             {
-                                                "Ref": "DBPassword"
+                                                "Ref":"DBPassword"
                                             },
                                             "/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/dbhostname/",
                                             {
-                                                "Fn::GetAtt": [
+                                                "Fn::GetAtt":[
                                                     "InfaDB",
                                                     "Endpoint.Address"
                                                 ]
@@ -2262,16 +2371,16 @@
                                             "sed -i -e 's/pwhdbname/infapwhdb/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/hadoopgatewayhost/",
                                             {
-                                                "Fn::If": [
+                                                "Fn::If":[
                                                     "SingleNodeCnd",
                                                     {
-                                                        "Fn::GetAtt": [
+                                                        "Fn::GetAtt":[
                                                             "HadoopGateway",
                                                             "PublicDnsName"
                                                         ]
                                                     },
                                                     {
-                                                        "Fn::GetAtt": [
+                                                        "Fn::GetAtt":[
                                                             "MultiNodeHadoopGateway",
                                                             "PublicDnsName"
                                                         ]
@@ -2281,53 +2390,53 @@
                                             "/g'  /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/hadoopnodes/",
                                             {
-                                                "Fn::If": [
+                                                "Fn::If":[
                                                     "SingleNodeCnd",
                                                     {
-                                                        "Fn::GetAtt": [
+                                                        "Fn::GetAtt":[
                                                             "HadoopGateway",
                                                             "PublicDnsName"
                                                         ]
                                                     },
                                                     {
-                                                        "Fn::If": [
+                                                        "Fn::If":[
                                                             "CreateLargeClusterCnd",
                                                             {
-                                                                "Fn::Join": [
+                                                                "Fn::Join":[
                                                                     ",",
                                                                     [
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopGateway",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode2",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode3",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode4",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode5",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode6",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2336,23 +2445,23 @@
                                                                 ]
                                                             },
                                                             {
-                                                                "Fn::Join": [
+                                                                "Fn::Join":[
                                                                     ",",
                                                                     [
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopGateway",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode2",
                                                                                 "PublicDnsName"
                                                                             ]
                                                                         },
                                                                         {
-                                                                            "Fn::GetAtt": [
+                                                                            "Fn::GetAtt":[
                                                                                 "MultiNodeHadoopNode3",
                                                                                 "PublicDnsName"
                                                                             ]
@@ -2367,11 +2476,11 @@
                                             "/g'  /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/ldmloadtype/",
                                             {
-                                                "Fn::If": [
+                                                "Fn::If":[
                                                     "SingleNodeCnd",
                                                     "low",
                                                     {
-                                                        "Fn::If": [
+                                                        "Fn::If":[
                                                             "CreateLargeClusterCnd",
                                                             "high",
                                                             "medium"
@@ -2383,7 +2492,7 @@
                                             "sed -i -e 's/repocontentcreatetimeout/1200000/g' /home/ec2-user/Mercury_Setup/config_template.xml\n",
                                             "sed -i -e 's/importsampledata/",
                                             {
-                                                "Fn::If": [
+                                                "Fn::If":[
                                                     "ImportSampleCnd",
                                                     "true",
                                                     "false"
@@ -2393,110 +2502,144 @@
                                         ]
                                     ]
                                 },
-                                "mode": "000700",
-                                "owner": "ec2-user",
-                                "group": "ec2-user"
+                                "mode":"000700",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
                             },
-                            "/home/ec2-user/Mercury_Setup/launchAnalystService.sh": {
-                                "content": {
-                                    "Fn::Join": [
+                            "/home/ec2-user/Mercury_Setup/reindexCatalogData.sh":{
+                                "content":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "#!/bin/bash\n",
                                             "administratorName=",
                                             {
-                                                "Ref": "InformaticaAdminUsername"
+                                                "Ref":"InformaticaAdminUsername"
                                             },
                                             "\n",
                                             "administratorPassword=",
                                             {
-                                                "Ref": "InformaticaAdminPassword"
+                                                "Ref":"InformaticaAdminPassword"
                                             },
                                             "\n",
-                                            "echo /opt/informatica/isp/bin/infacmd.sh as createService -dn Domain -nn Node -sn Analyst_Service -un $administratorName -pd $administratorPassword -rs Model_Repository_Service -ds Data_Integration_Service -ffl /tmp -cs Catalog_Service -csau $administratorName -csap $administratorPassword -au $administratorName -ap $administratorPassword -bgefd /tmp -HttpPort 8089 >> /installation.log \n",
+                                            "clusterSize=",
+                                            {
+                                                "Ref":"ICSClusterSize"
+                                            },
+                                            "\n",
+                                            "if [ $clusterSize != \"Small\" ] ; then \n",
+                                            "publicDnsName=$(curl http://169.254.169.254/latest/meta-data/public-hostname) \n",
+                                            "echo \"Performing the reindexing of Catalog Data\" >>/installation.log \n",
+                                            "curl -I -u $administratorName:$administratorPassword -X POST --header \"Content-Type: application/json\" --header \"Accept: application/json\" \"http://$publicDnsName:8085/access/1/catalog/data/search/index \" >> /installation.log 2>&1 \n",
+                                            "fi \n"
+                                        ]
+                                    ]
+                                },
+                                "mode":"000770",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
+                            },
+                            "/home/ec2-user/Mercury_Setup/launchAnalystService.sh":{
+                                "content":{
+                                    "Fn::Join":[
+                                        "",
+                                        [
+                                            "#!/bin/bash\n",
+                                            "administratorName=",
+                                            {
+                                                "Ref":"InformaticaAdminUsername"
+                                            },
+                                            "\n",
+                                            "administratorPassword=",
+                                            {
+                                                "Ref":"InformaticaAdminPassword"
+                                            },
+                                            "\n",
+                                            "echo \" /opt/informatica/isp/bin/infacmd.sh as createService -dn Domain -nn Node -sn Analyst_Service -un $administratorName -pd ****** -rs Model_Repository_Service -ds Data_Integration_Service -ffl /tmp -cs Catalog_Service -csau $administratorName -csap ****** -au $administratorName -ap ****** -bgefd /tmp -HttpPort 8089 \" >> /installation.log \n",
                                             "/opt/informatica/isp/bin/infacmd.sh as createService -dn Domain -nn Node -sn Analyst_Service -un $administratorName -pd $administratorPassword -rs Model_Repository_Service -ds Data_Integration_Service -ffl /tmp -cs Catalog_Service -csau $administratorName -csap $administratorPassword -au $administratorName -ap $administratorPassword -bgefd /tmp -HttpPort 8089 >> /installation.log 2>&1 \n",
-                                            "echo /opt/informatica/isp/bin/infacmd.sh assignLicense -dn Domain -un $administratorName -pd $administratorPassword -ln License -sn Analyst_Service >> /installation.log \n",
+                                            "echo \" /opt/informatica/isp/bin/infacmd.sh assignLicense -dn Domain -un $administratorName -pd ****** -ln License -sn Analyst_Service \" >> /installation.log \n",
                                             "/opt/informatica/isp/bin/infacmd.sh assignLicense -dn Domain -un $administratorName -pd $administratorPassword -ln License -sn Analyst_Service >> /installation.log 2>&1 \n",
-                                            "echo /opt/informatica/isp/bin/infacmd.sh as updateServiceOptions -dn Domain -sn Analyst_Service -un $administratorName -pd $administratorPassword  -o BGExport.BGPermanentAttachmentFileLocation=/tmp >> /installation.log \n",
+                                            "echo \" /opt/informatica/isp/bin/infacmd.sh as updateServiceOptions -dn Domain -sn Analyst_Service -un $administratorName -pd ******  -o BGExport.BGPermanentAttachmentFileLocation=/tmp \" >> /installation.log \n",
                                             "/opt/informatica/isp/bin/infacmd.sh as updateServiceOptions -dn Domain -sn Analyst_Service -un $administratorName -pd $administratorPassword  -o BGExport.BGPermanentAttachmentFileLocation=/tmp >> /installation.log 2>&1 \n",
-                                            "echo /opt/informatica/isp/bin/infacmd.sh enableService -dn Domain -un $administratorName -pd $administratorPassword -sn Analyst_Service >> /installation.log \n",
+                                            "echo \" /opt/informatica/isp/bin/infacmd.sh enableService -dn Domain -un $administratorName -pd ****** -sn Analyst_Service \" >> /installation.log \n",
                                             "/opt/informatica/isp/bin/infacmd.sh enableService -dn Domain -un $administratorName -pd $administratorPassword -sn Analyst_Service >> /installation.log 2>&1 \n"
                                         ]
                                     ]
                                 },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user"
+                                "mode":"000770",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
                             },
-                            "/home/ec2-user/Mercury_Setup/cleanupScripts.sh": {
-                                "content": {
-                                    "Fn::Join": [
+                            "/home/ec2-user/Mercury_Setup/cleanupScripts.sh":{
+                                "content":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "#!/bin/bash\n",
                                             "rm -f /home/ec2-user/Mercury_Setup/config_template.xml \n",
+                                            "rm -f /home/ec2-user/Mercury_Setup/reindexCatalogData.sh \n",
                                             "rm -f /home/ec2-user/Mercury_Setup/launchAnalystService.sh \n",
                                             "rm -f /home/ec2-user/Mercury_Setup/replaceValues.sh \n",
                                             "rm -f /home/ec2-user/Mercury_Setup/replaceHostname.sh \n"
                                         ]
                                     ]
                                 },
-                                "mode": "000770",
-                                "owner": "ec2-user",
-                                "group": "ec2-user"
+                                "mode":"000770",
+                                "owner":"ec2-user",
+                                "group":"ec2-user"
                             },
-                            "/mnt1/EICLicense.key": {
-                                "source": {
-                                    "Fn::Join": [
+                            "/mnt1/EICLicense.key":{
+                                "source":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "https://",
                                             {
-                                                "Ref": "InformaticaEICKeyS3Bucket"
+                                                "Ref":"InformaticaEICKeyS3Bucket"
                                             },
                                             ".s3.amazonaws.com/",
                                             {
-                                                "Ref": "InformaticaEICKeyName"
+                                                "Ref":"InformaticaEICKeyName"
                                             }
                                         ]
                                     ]
                                 },
-                                "mode": "000400",
-                                "owner": "ec2-user",
-                                "group": "ec2-user",
-                                "authentication": "S3AccessCreds"
+                                "mode":"000400",
+                                "owner":"ec2-user",
+                                "group":"ec2-user",
+                                "authentication":"S3AccessCreds"
                             }
                         }
                     },
-                    "Configure": {
-                        "commands": {
-                            "01_ReplaceHostname": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
+                    "Configure":{
+                        "commands":{
+                            "01_ReplaceHostname":{
+                                "command":"sudo /home/ec2-user/Mercury_Setup/replaceHostname.sh"
                             },
-                            "02_ReplaceValues": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/replaceValues.sh"
+                            "02_ReplaceValues":{
+                                "command":"sudo /home/ec2-user/Mercury_Setup/replaceValues.sh"
                             },
-                            "03_DatabaseCreation": {
-                                "command": {
-                                    "Fn::Join": [
+                            "03_DatabaseCreation":{
+                                "command":{
+                                    "Fn::Join":[
                                         "",
                                         [
                                             "touch /installation.log \n",
                                             "chmod 600 /installation.log \n",
                                             "sudo java -cp /home/ec2-user/mssqlutil/MSSQLUtility.jar:/home/ec2-user/mssqlutil/com.informatica.datadirect-dwsqlserver-5.1.4_B.jar mssqlutil/MSSQLUtility jdbc:informatica:sqlserver://",
                                             {
-                                                "Fn::GetAtt": [
+                                                "Fn::GetAtt":[
                                                     "InfaDB",
                                                     "Endpoint.Address"
                                                 ]
                                             },
                                             ":1433 ",
                                             {
-                                                "Ref": "DBUser"
+                                                "Ref":"DBUser"
                                             },
                                             " ",
                                             {
-                                                "Ref": "DBPassword"
+                                                "Ref":"DBPassword"
                                             },
                                             " infadb ",
                                             "infamrsdb ",
@@ -2506,93 +2649,104 @@
                                     ]
                                 }
                             },
-                            "04_MercurySetup": {
-                                "command": "sudo java -jar /home/ec2-user/Mercury_Setup/mercury_setup.jar -cf /home/ec2-user/Mercury_Setup/config_template.xml -s -uei"
+                            "04_MercurySetup":{
+                                "command":"sudo java -jar /home/ec2-user/Mercury_Setup/mercury_setup.jar -cf /home/ec2-user/Mercury_Setup/config_template.xml -s -uei"
                             },
-                            "05_AnalystServiceSetup": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/launchAnalystService.sh"
+                            "05_ReindexCatalogData":{
+                                "command":"sudo /home/ec2-user/Mercury_Setup/reindexCatalogData.sh"
                             },
-                            "06_cleanupScripts": {
-                                "command": "sudo /home/ec2-user/Mercury_Setup/cleanupScripts.sh"
+                            "06_AnalystServiceSetup":{
+                                "command":"sudo /home/ec2-user/Mercury_Setup/launchAnalystService.sh"
+                            },
+                            "07_cleanupScripts":{
+                                "command":"sudo /home/ec2-user/Mercury_Setup/cleanupScripts.sh"
                             }
                         }
                     }
                 }
             },
-            "Properties": {
-                "IamInstanceProfile": {
-                    "Ref": "InstanceProfile"
+            "Properties":{
+                "IamInstanceProfile":{
+                    "Ref":"InstanceProfile"
                 },
-                "ImageId": {
-                    "Fn::FindInMap": [
+                "ImageId":{
+                    "Fn::FindInMap":[
                         "AWSAMIRegionMap",
                         {
-                            "Ref": "AWS::Region"
+                            "Ref":"AWS::Region"
                         },
                         "INFAEICADMINHVM"
                     ]
                 },
-                "InstanceType": {
-                    "Ref": "InformaticaServerInstanceType"
+                "InstanceType":{
+                    "Ref":"InformaticaServerInstanceType"
                 },
-                "KeyName": {
-                    "Ref": "KeyName"
+                "KeyName":{
+                    "Ref":"KeyName"
                 },
-                "InstanceInitiatedShutdownBehavior": "stop",
-                "NetworkInterfaces": [
+                "InstanceInitiatedShutdownBehavior":"stop",
+                "NetworkInterfaces":[
                     {
-                        "NetworkInterfaceId": {
-                            "Ref": "AdministrationServerNetInterface"
+                        "NetworkInterfaceId":{
+                            "Ref":"AdministrationServerNetInterface"
                         },
-                        "DeviceIndex": "0"
+                        "DeviceIndex":"0"
                     }
                 ],
-                "Tags": [
+                "Tags":[
                     {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Join": [
+                        "Key":"Name",
+                        "Value":{
+                            "Fn::Join":[
                                 "",
                                 [
                                     "InformaticaDomain-",
                                     {
-                                        "Ref": "AWS::StackName"
+                                        "Ref":"AWS::StackName"
                                     }
                                 ]
                             ]
                         }
                     }
                 ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join":[
                             "",
                             [
                                 "#!/bin/bash\n",
                                 "sudo yum update -y aws-cfn-bootstrap\n",
+                                "sudo wget -O /home/ec2-user/Mercury_Setup/awslogs-agent-setup.py https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py \n",
+                                "sudo chmod +x /home/ec2-user/Mercury_Setup/awslogs-agent-setup.py \n",
+                                "sudo python /home/ec2-user/Mercury_Setup/awslogs-agent-setup.py -n -r ",
+                                {
+                                    "Ref":"AWS::Region"
+                                },
+                                " -c https://s3.amazonaws.com/eic-cloudwatch-configuration/awsCloudwatchLogs.conf \n",
+                                "service awslogs start \n",
                                 "# Install the files and packages from the metadata\n",
                                 "/opt/aws/bin/cfn-init -v ",
                                 "         --stack ",
                                 {
-                                    "Ref": "AWS::StackName"
+                                    "Ref":"AWS::StackName"
                                 },
                                 "         --resource AdministrationServer ",
                                 "         --configsets InstallAndRun ",
                                 "         --region ",
                                 {
-                                    "Ref": "AWS::Region"
+                                    "Ref":"AWS::Region"
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
                                 "/opt/aws/bin/cfn-signal -e $? ",
                                 " --stack ",
                                 {
-                                    "Ref": "AWS::StackName"
+                                    "Ref":"AWS::StackName"
                                 },
                                 " --resource AdministrationServer ",
                                 " --region ",
                                 {
-                                    "Ref": "AWS::Region"
+                                    "Ref":"AWS::Region"
                                 },
                                 "\n"
                             ]
@@ -2600,34 +2754,34 @@
                     }
                 }
             },
-            "CreationPolicy": {
-                "ResourceSignal": {
-                    "Timeout": "PT3H"
+            "CreationPolicy":{
+                "ResourceSignal":{
+                    "Timeout":"PT3H"
                 }
             },
-            "DependsOn": [
+            "DependsOn":[
                 "InfaDB",
                 "AdministrationServerNetInterface",
                 "WaitForClusterInstancesCondition"
             ]
         }
     },
-    "Outputs": {
-        "InstanceID": {
-            "Description": "Informatica Domain Host Name",
-            "Value": {
-                "Ref": "AdministrationServer"
+    "Outputs":{
+        "InstanceID":{
+            "Description":"Informatica Domain Host Name",
+            "Value":{
+                "Ref":"AdministrationServer"
             }
         },
-        "InformaticaAdminConsoleURL": {
-            "Description": "Informatica Administrator Console",
-            "Value": {
-                "Fn::Join": [
+        "InformaticaAdminConsoleURL":{
+            "Description":"Informatica Administrator Console",
+            "Value":{
+                "Fn::Join":[
                     "",
                     [
                         "http://",
                         {
-                            "Fn::GetAtt": [
+                            "Fn::GetAtt":[
                                 "AdministrationServer",
                                 "PublicDnsName"
                             ]
@@ -2637,15 +2791,15 @@
                 ]
             }
         },
-        "ICSSingleNodeClusterURL": {
-            "Description": "ICS Hadoop Gateway node",
-            "Value": {
-                "Fn::Join": [
+        "ICSSingleNodeClusterURL":{
+            "Description":"ICS Hadoop Gateway node",
+            "Value":{
+                "Fn::Join":[
                     "",
                     [
                         "http://",
                         {
-                            "Fn::GetAtt": [
+                            "Fn::GetAtt":[
                                 "HadoopGateway",
                                 "PublicDnsName"
                             ]
@@ -2654,17 +2808,17 @@
                     ]
                 ]
             },
-            "Condition": "SingleNodeCnd"
+            "Condition":"SingleNodeCnd"
         },
-        "ICSMultiNodeClusterURL": {
-            "Description": "ICS Hadoop Gateway node",
-            "Value": {
-                "Fn::Join": [
+        "ICSMultiNodeClusterURL":{
+            "Description":"ICS Hadoop Gateway node",
+            "Value":{
+                "Fn::Join":[
                     "",
                     [
                         "http://",
                         {
-                            "Fn::GetAtt": [
+                            "Fn::GetAtt":[
                                 "MultiNodeHadoopGateway",
                                 "PublicDnsName"
                             ]
@@ -2673,15 +2827,15 @@
                     ]
                 ]
             },
-            "Condition": "MultipleNodeCnd"
+            "Condition":"MultipleNodeCnd"
         },
-        "InformaticaAdminConsoleServerLogs": {
-            "Description": "Informatica Domain Installation Log Location",
-            "Value": "/installation.log"
+        "InformaticaAdminConsoleServerLogs":{
+            "Description":"Informatica Domain Installation Log Location",
+            "Value":"/installation.log"
         },
-        "InstanceSetupLogs": {
-            "Description": "Informatica Domain EC2 Instance setup Log Location",
-            "Value": "/var/log/cfn-init-cmd.log"
+        "InstanceSetupLogs":{
+            "Description":"Informatica Domain EC2 Instance setup Log Location",
+            "Value":"/var/log/cfn-init-cmd.log"
         }
     }
 }
