@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "This template creates a VPC infrastructure with a deployment of Informatica Enterprise Information Catalog. It will deploy a bastion and managed NAT gateways or NAT instances into the public subnet for each Availability Zone. **WARNING** This template creates Amazon EC2 instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
+    "Description": "This template creates a VPC infrastructure with a deployment of Informatica Enterprise Data Catalog. It will deploy a bastion and managed NAT gateways or NAT instances into the public subnet for each Availability Zone. **WARNING** This template creates Amazon EC2 instance and related resources. You will be billed for the AWS resources used if you create a stack from this template.",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -40,7 +40,7 @@
                 },
                 {
                     "Label": {
-                        "default": "Informatica Enterprise Information Catalog Configuration"
+                        "default": "Informatica Enterprise Data Catalog Configuration"
                     },
                     "Parameters": [
                         "InformaticaAdminUsername",
@@ -87,10 +87,10 @@
                     "default": "Informatica Administrator Username"
                 },
                 "InformaticaEICKeyName": {
-                    "default": "Enterprise Information Catalog License Key Name"
+                    "default": "Enterprise Data Catalog License Key Name"
                 },
                 "InformaticaEICKeyS3Bucket": {
-                    "default": "Enterprise Information Catalog License Key Location"
+                    "default": "Enterprise Data Catalog License Key Location"
                 },
                 "ImportSampleData": {
                     "default": "Import Sample Content"
@@ -134,12 +134,12 @@
             "Type": "List<AWS::EC2::AvailabilityZone::Name>"
         },
         "DBPassword": {
-            "Description": "Password for the database instance associated with Informatica domain and services (such as Model Repository Service, Data Integration Service, Content Management Service)",
+            "Description": "Password for the database instance associated with Informatica domain and services (such as Model Repository Service, Data Integration Service, Content Management Service). Password should be at least 8 characters long and cannot contain \" @ and / ",
             "MaxLength": "128",
             "MinLength": "8",
             "NoEcho": "True",
             "AllowedPattern": "[^/\"@]*",
-            "ConstraintDescription": "Database Password should be atleast 8 characters and cannot contain \" @ and ^",
+            "ConstraintDescription": "Database Password should be atleast 8 characters and cannot contain \" @ and /",
             "Type": "String"
         },
         "ConfirmDBPassword": {
@@ -188,13 +188,13 @@
         },
         "InformaticaEICKeyName": {
             "Type": "String",
-            "Description": "The Informatica Enterprise Information Catalog license key name. For example, <license key name> or <bucket sub folder/license key name>",
+            "Description": "The Informatica Enterprise Data Catalog license key name. For example, <license key name> or <bucket sub folder/license key name>",
             "MinLength": "1",
             "ConstraintDescription": "Informatica EIC Key Name is mandatory"
         },
         "InformaticaEICKeyS3Bucket": {
             "Type": "String",
-            "Description": "Name of the Amazon S3 bucket in your account that contains the Informatica Enterprise Information Catalog Key",
+            "Description": "Name of the Amazon S3 bucket in your account that contains the Informatica Enterprise Data Catalog Key",
             "MinLength": "1",
             "ConstraintDescription": "Informatica EIC Key S3 bucket is mandatory"
         },
@@ -267,7 +267,6 @@
         "IPAddressRange": {
             "Description": "The CIDR IP range that is permitted to access the Informatica domain and the Informatica embedded cluster",
             "Type": "String",
-            "Default": "0.0.0.0/0",
             "MinLength": "9",
             "MaxLength": "18",
             "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
